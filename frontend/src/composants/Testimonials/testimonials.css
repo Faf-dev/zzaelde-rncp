@@ -1,0 +1,90 @@
+.review-page h1 {
+    text-align: center;
+    padding: 2rem;
+    background-color: black;
+    color: white;
+    margin: 0;
+}
+
+.review-page .review-box-container {
+    display: flex;
+    padding: 4rem;
+    flex-wrap: wrap;
+    gap: 6rem;
+    justify-content: center;
+}
+
+.review-page .review-box-container .review-container {
+    text-align: center;
+    padding: 2rem;
+    border: 1px solid black;
+    box-shadow: 1 1 1;
+    flex: 1 1 30rem;
+    border-radius: 0.5rem;
+    margin-top: 6rem;
+    margin-bottom: 6rem;
+    position: relative;
+    padding-bottom: 4rem;
+}
+
+.review-page .review-box-container .review-container img {
+    border-radius: 50%;
+    height: 12rem;
+    width: 12rem;
+    margin-top: -8rem;
+    object-fit: cover;
+    border: 1px solid black;
+}
+
+.review-page .review-box-container .review-container h3 {
+    font-size: 2.5rem;
+    color: black;
+    padding: 0;
+    margin: 1rem;
+}
+
+.review-page .review-box-container .review-container p {
+    font-size: 1.5rem;
+    color: black;
+    font-style: italic;
+    padding: 0;
+    margin: 0.5rem;
+}
+
+.review-page .review-box-container button {
+    position: absolute;
+    pointer-events: all;
+    cursor: pointer;
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+    border-radius: 3rem;
+    color: rgb(0, 0, 0);
+    background-color: white;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(50%);
+    transition: background-color 0.3s ease;
+}
+
+.review-page .review-box-container button:hover {
+    background-color: black;
+    color: white;
+}
+
+
+/* .tag-box {
+    position: relative;
+    width: 18rem;
+    height: 2.5rem;
+    border-radius: 50px;
+    background: linear-gradient(to right, #656565, #7f42a7, #6600c5, #5300a0, #757575, #656565);
+    background-size: 200%;
+    animation: animationGradient 2.5s linear infinite;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes animationGradient {
+    to {
+        background-position: 200%;
+    }
+}*/

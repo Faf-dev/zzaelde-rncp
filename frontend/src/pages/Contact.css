@@ -1,0 +1,33 @@
+header svg {
+    fill: rgb(0, 0, 0, 0.8) !important;
+}
+
+.contact-footer {
+    margin-top: auto;
+    width: 100%;
+}
+
+.ContactPage {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-form {
+    width: 100%;
+}
+
+.ContactPage .contact-header .mobile-nav .bi {
+    color: rgb(0, 0, 0, 0.8) !important;
+}
+
+.ContactPage .contact-header .mobile-nav-menu a {
+    font-weight: 500;
+    border-bottom: solid 1px rgba(131, 131, 131, 0.2);
+    color: rgb(0, 0, 0, 0.8) !important;
+}
+
+.contact-header .social-link svg {
+    fill: rgb(0, 0, 0, 0.7);
+}
+

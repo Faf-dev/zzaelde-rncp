@@ -1,0 +1,349 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+/* ========== SLIDER COMPONENT SCOPED ========== */
+.slider-component {
+    width: 100vw; /* 100vw au lieu de 99vw */
+    height: 100vh;
+    overflow: hidden;
+    display: block; /* block au lieu de bottom qui n'existe pas */
+    position: relative;
+    font-family: Poppins;
+    background-color: black;
+    color: #eee;
+    margin: 0; /* Assure qu'il n'y a pas de marge */
+    padding: 0; /* Assure qu'il n'y a pas de padding */
+    font-size: 12px;
+}
+
+.slider-component a {
+    text-decoration: none;
+    color: #eee;
+}
+
+.slider-component .slider-list .slider-item {
+    position: absolute;
+    inset: 0 0 0 0;
+    pointer-events: none; /* Les slides inactives ne bloquent pas les clics */
+}
+
+.slider-component .slider-list .slider-item:nth-child(1) {
+    pointer-events: auto; /* Seule la slide active est cliquable */
+}
+
+.slider-component .slider-item img {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    filter: brightness(0.8);
+}
+
+.slider-component .slider-content {
+    position: absolute;
+    top: 20%;
+    width: 1140px;
+    max-width: 80%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-shadow: 0 5px 10px rgba(0, 0, 0, 0.7);
+    box-sizing: border-box;
+    color: white;
+    z-index: 1000;
+}
+
+.slider-component .slider-author {
+    font-weight: bold;
+    letter-spacing: 10px;
+}
+
+.slider-component .slider-title,
+.slider-component .slider-topic {
+    font-weight: bold;
+    font-size: 5em;
+    line-height: 1.3em;
+}
+
+.slider-component .slider-topic {
+    color: #ffa500;
+}
+
+.slider-component .slider-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 130px);
+    grid-template-rows: 40px;
+    gap: 5px;
+    margin-top: 20px;
+}
+
+.slider-component button {
+    background-color: white;
+    letter-spacing: 2px;
+    font-family: Poppins;
+    font-weight: 500;
+}
+
+.slider-component .slider-buttons .Contact-button {
+    color: rgb(0, 0, 0);
+    font-weight: 600;
+    background-color: rgb(255, 165, 0, 0.8);
+    border: 2px solid rgb(0, 0, 0);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.slider-component .slider-buttons .Contact-button:hover {
+    color: rgb(255, 255, 255);
+    background-color: rgb(194, 126, 0);
+    border: 1px solid rgb(255, 255, 255);
+}
+
+
+.slider-component .slider-buttons .Detail-button {
+    border: 1px solid black;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.slider-component .slider-buttons .Detail-button:hover {
+    border: 1px solid rgb(0, 0, 0);
+    background-color: #d1d1d1;
+    color: rgb(0, 0, 0);
+}
+
+
+/* Assure que le wrapper du bouton ne bloque pas le backdrop-filter */
+.slider-component .slider-item:nth-child(1) .slider-buttons .glass-button-component .button-wrap {
+    backdrop-filter: none;
+    background: transparent;
+}
+
+/* Solution alternative : pseudo-élément avec backdrop-filter si le backdrop-filter du bouton ne fonctionne pas */
+.slider-component .slider-item:nth-child(1) .slider-buttons .glass-button-component button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 999vw;
+    backdrop-filter: blur(15px) saturate(180%);
+    -webkit-backdrop-filter: blur(15px) saturate(180%);
+    z-index: -1;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.slider-component .slider-button {
+    border: none;
+    background-color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 3px;
+    font-family: Poppins;
+    z-index: 999 !important;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Miniatures */
+.slider-component .slider-miniature {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    width: max-content;
+    z-index: 100;
+    display: flex;
+    gap: 20px;
+}
+
+.slider-component .slider-miniature .slider-thumb-item {
+    width: 150px;
+    height: 200px;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.slider-component .slider-miniature .slider-thumb-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+/* Désactive tous les boutons des slides par défaut */
+.slider-component .slider-item .slider-buttons,
+.slider-component .slider-item .slider-buttons * {
+    pointer-events: none;
+}
+
+/* Active uniquement les boutons de la première slide (visible) */
+.slider-component .slider-item:nth-child(1) .slider-buttons,
+.slider-component .slider-item:nth-child(1) .slider-buttons * {
+    pointer-events: auto !important;
+}
+
+.slider-component .slider-miniature .slider-thumb-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    border-radius: 0 0 20px 20px;
+    pointer-events: none;
+}
+
+.slider-component .slider-miniature .slider-thumb-item .slider-thumb-content {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    z-index: 1;
+}
+
+.slider-component .slider-miniature .slider-thumb-item .slider-thumb-content .slider-thumb-title {
+    font-weight: bold;
+}
+
+/* arrows */
+.slider-component .slider-arrows {
+    position: absolute;
+    top: 86%;
+    right: 55%;
+    width: auto;
+    max-width: 30%;
+    display: flex;
+    gap: 10px;
+    z-index: 1000; /* Z-index élevé pour rester au-dessus */
+    pointer-events: auto; /* Assure que les boutons sont cliquables */
+}
+
+.slider-component .slider-arrows button,
+.slider-component .slider-arrows .slider-arrow-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #00000059;
+    background: rgba(156, 156, 156, 0.419);
+    backdrop-filter: blur(2px);
+    font-family: monospace;
+    color: #fff;
+    font-weight: bold;
+    font-size: large;
+    transition: 0.5s;
+    cursor: pointer;
+    z-index: 1001;
+    position: relative;
+}
+
+.slider-component .slider-arrows button:hover,
+.slider-component .slider-arrows .slider-arrow-btn:hover {
+    background-color: #eee;
+    color: #555;
+}
+
+/* Animations spécifiques au slider - VERSION CORRIGÉE */
+/* Style par défaut pour tous les éléments de contenu */
+.slider-component .slider-item .slider-author,
+.slider-component .slider-item .slider-title,
+.slider-component .slider-item .slider-topic,
+.slider-component .slider-item .slider-description,
+.slider-component .slider-item .slider-buttons {
+    transform: translateY(50px);
+    filter: blur(20px);
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+/* Animation pour l'élément visible (premier enfant) */
+.slider-component .slider-item:nth-child(1) .slider-author,
+.slider-component .slider-item:nth-child(1) .slider-title,
+.slider-component .slider-item:nth-child(1) .slider-topic,
+.slider-component .slider-item:nth-child(1) .slider-description,
+.slider-component .slider-item:nth-child(1) .slider-buttons {
+    transform: translateY(0);
+    filter: blur(0);
+    opacity: 1;
+    animation: sliderShowContent 0.5s ease forwards;
+}
+
+@keyframes sliderShowContent {
+    from {
+        opacity: 0;
+        filter: blur(20px);
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        filter: blur(0);
+        transform: translateY(0);
+    }
+}
+
+.slider-component .slider-item:nth-child(1) .slider-author {
+    animation-delay: 0.1s;
+}
+.slider-component .slider-item:nth-child(1) .slider-title {
+    animation-delay: 0.1s;
+}
+.slider-component .slider-item:nth-child(1) .slider-topic {
+    animation-delay: 0.1s;
+}
+.slider-component .slider-item:nth-child(1) .slider-description {
+    animation-delay: 0.1s;
+}
+.slider-component .slider-item:nth-child(1) .slider-buttons {
+    animation-delay: 0.1s;
+}
+
+/* clique next - Animations de transition */
+.slider-component.next .slider-item:nth-child(1) img {
+    width: 150px;
+    height: 220px;
+    position: absolute;
+    left: 50%;
+    bottom: 50px;
+    border-radius: 20px;
+    animation: sliderShowImage 0.5s linear 1 forwards;
+}
+
+@keyframes sliderShowImage {
+    to {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        border-radius: 0;
+    }
+}
+
+/* Animations de transition pour les clics next */
+.slider-component.next .slider-item:nth-child(1) img {
+    width: 150px;
+    height: 220px;
+    position: absolute;
+    left: 50%;
+    bottom: 50px;
+    border-radius: 20px;
+    animation: sliderShowImage 0.5s linear 1 forwards;
+}
+
+@keyframes sliderShowImage {
+    to {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        border-radius: 0;
+    }
+}
+
+.slider-component.next .slider-miniature {
+    transform: translateX(150px);
+    animation: sliderTransformMiniature 0.5s linear 1 forwards;
+}
+
+@keyframes sliderTransformMiniature {
+    to {
+        transform: translateX(0);
+    }
+}

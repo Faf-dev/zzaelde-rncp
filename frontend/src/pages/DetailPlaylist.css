@@ -1,0 +1,305 @@
+/* ========== PAGE DETAIL PLAYLIST ========== */
+
+.detail-page {
+    min-height: 100vh;
+    background-color: #0a0a0a;
+    color: #eee;
+    font-family: Poppins, system-ui, sans-serif;
+}
+
+.detail-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #0a0a0a;
+    color: #eee;
+    font-family: Poppins, system-ui, sans-serif;
+    font-size: 1.2rem;
+}
+
+/* ========== HERO ========== */
+
+.detail-hero {
+    position: relative;
+    height: 55vh;
+    background-size: cover;
+    background-position: center;
+}
+
+.detail-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.35) 0%,
+        rgba(0, 0, 0, 0.75) 60%,
+        rgba(0, 0, 0, 0.95) 100%
+    );
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 2rem 3rem 3rem;
+}
+
+.detail-back-btn {
+    position: absolute;
+    top: 8rem;
+    left: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #eee;
+    padding: 0.5rem 1.2rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: background 0.2s;
+}
+
+.detail-back-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.detail-hero-content {
+    max-width: 800px;
+}
+
+.detail-hero-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #f97316;
+    margin: 0 0 0.4rem;
+}
+
+.detail-hero-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    margin: 0 0 0.75rem;
+    line-height: 1.1;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+.detail-hero-description {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0 0 0.75rem;
+    max-width: 600px;
+}
+
+.detail-hero-count {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.25rem 0.9rem;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+}
+
+/* ========== CONTENU VIDÉOS ========== */
+
+.detail-content {
+    padding: 2.5rem 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.detail-section-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0 0 1.5rem;
+    color: #eee;
+}
+
+.detail-video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+
+/* ========== CARTE VIDÉO ========== */
+
+.detail-video-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.detail-video-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(249, 115, 22, 0.5);
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.detail-video-thumb {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background-color: #111;
+}
+
+.detail-video-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.detail-video-card:hover .detail-video-thumb img {
+    transform: scale(1.04);
+}
+
+.detail-video-play-icon {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.2s;
+}
+
+.detail-video-card:hover .detail-video-play-icon {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.detail-video-play-icon i {
+    font-size: 2.5rem;
+    color: white;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.2s, transform 0.2s;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+}
+
+.detail-video-card:hover .detail-video-play-icon i {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.detail-video-info {
+    padding: 0.85rem 1rem;
+}
+
+.detail-video-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #eee;
+    margin: 0 0 0.35rem;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.detail-video-date {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.45);
+    margin: 0;
+}
+
+/* ========== MODALE ========== */
+
+.detail-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(6px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.detail-modal {
+    position: relative;
+    width: 100%;
+    max-width: 860px;
+    background: #111;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+}
+
+.detail-modal-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #eee;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+
+.detail-modal-close:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.detail-modal-iframe-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+}
+
+.detail-modal-iframe-wrapper iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.detail-modal-video-title {
+    padding: 0.9rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #eee;
+    margin: 0;
+    background: #111;
+}
+
+/* ========== RESPONSIVE ========== */
+
+@media (max-width: 768px) {
+    .detail-hero-overlay {
+        padding: 1.5rem 1.25rem 2rem;
+    }
+
+    .detail-hero {
+        height: 50vh;
+    }
+
+    .detail-content {
+        padding: 2rem 1.25rem;
+    }
+
+    .detail-video-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .detail-video-grid {
+        grid-template-columns: 1fr;
+    }
+}

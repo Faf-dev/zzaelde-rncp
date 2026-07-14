@@ -1,0 +1,15 @@
+__pycache__/
+venv/
+dist/
+build/
+*.db
+
+node_modules/
+
+.env
+
+uploads/
+data/
+
+dist/
+build/
