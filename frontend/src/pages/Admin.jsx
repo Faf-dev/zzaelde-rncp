@@ -13,7 +13,7 @@ function Notification({ type, texte }) {
 }
 
 function Spinner() {
-  return <span className="admin-spinner" aria-label="Chargement…" />;
+  return <span className="admin-spinner" aria-label="chargement..." />;
 }
 
 function Badge({ ok, texte }) {
@@ -64,11 +64,11 @@ export default function Admin() {
       const resultat = await youtubeApi.synchroniser();
       afficherNotification(
         "ok",
-        `Synchronisation terminée : ${resultat.message}`
+        `synchronisation ytb terminee : ${resultat.message}`
       );
       chargerPlaylists();
     } catch (err) {
-      afficherNotification("err", `Erreur de synchronisation : ${err.message}`);
+      afficherNotification("err", `erreur de synchronisation ytb : ${err.message}`);
     } finally {
       setSynchronisation(false);
     }
@@ -79,7 +79,7 @@ export default function Admin() {
 
       {/* Barre du haut */}
       <header className="admin-topbar">
-        <span className="admin-topbar-title">Administration · Zzaelde</span>
+        <span className="admin-topbar-title">Administration - Zzaelde</span>
         <div className="admin-topbar-actions">
           <span className="admin-topbar-user">{user?.username}</span>
           <button className="admin-btn admin-btn--ghost" onClick={logout}>
@@ -104,29 +104,29 @@ export default function Admin() {
 
         {/* Section : synchronisation YouTube */}
         <section className="admin-section">
-          <h2 className="admin-section-title">YouTube</h2>
+          <h2 className="admin-section-title">youtube</h2>
           <div className="admin-youtube-bar">
             <p className="admin-youtube-info">
-              Clique sur le bouton pour récupérer les dernières playlists et vidéos depuis YouTube.
+              Clique pour synchroniser playlist et video
             </p>
             <button
               className="admin-btn admin-btn--primary"
               onClick={synchroniserYoutube}
               disabled={synchronisation}
             >
-              {synchronisation ? <><Spinner /> Synchronisation…</> : "Synchroniser depuis YouTube"}
+              {synchronisation ? <><Spinner /> synchro...</> : "synchroniser depuis ytb"}
             </button>
           </div>
         </section>
 
         {/* Section : gestion des playlists et vidéos */}
         <section className="admin-section">
-          <h2 className="admin-section-title">Playlists & Vidéos</h2>
+          <h2 className="admin-section-title">playlist & videos</h2>
           {chargement ? (
-            <div className="admin-loading"><Spinner /> Chargement…</div>
+            <div className="admin-loading"><Spinner /> chargement...</div>
           ) : playlists.length === 0 ? (
             <p className="admin-empty">
-              Aucune playlist. Lance une synchronisation YouTube pour importer les données.
+              aucune playlist.
             </p>
           ) : (
             <div className="admin-playlists">
@@ -189,7 +189,7 @@ function FormMotDePasse({ notifier }) {
         required
       />
       <button className="admin-btn admin-btn--primary" type="submit" disabled={envoi}>
-        {envoi ? "Mise à jour…" : "Changer le mot de passe"}
+        {envoi ? "mise a jour..." : "Changer le mot de passe"}
       </button>
     </form>
   );
@@ -212,7 +212,7 @@ function CartePlaylist({ playlist, onMiseAJour, notifier }) {
     setSauvegarde(true);
     try {
       await adminPlaylistsApi.modifier(playlist.id, { title: titre, description });
-      notifier("ok", "Playlist mise à jour");
+      notifier("ok", "playlist mis a jour");
       setEnEdition(false);
       onMiseAJour();
     } catch (err) {
@@ -227,7 +227,7 @@ function CartePlaylist({ playlist, onMiseAJour, notifier }) {
     if (!fichier) return;
     try {
       await adminPlaylistsApi.changerImage(playlist.id, fichier);
-      notifier("ok", "Image mise à jour");
+      notifier("ok", "image mis a jour");
       onMiseAJour();
     } catch (err) {
       notifier("err", err.message);
@@ -255,10 +255,6 @@ function CartePlaylist({ playlist, onMiseAJour, notifier }) {
 
   function mettreAJourVideo(videoModifiee) {
     setVideos((prev) => prev.map((v) => (v.id === videoModifiee.id ? videoModifiee : v)));
-  }
-
-  function supprimerVideoLocale(videoId) {
-    setVideos((prev) => prev.filter((v) => v.id !== videoId));
   }
 
   return (
@@ -290,7 +286,7 @@ function CartePlaylist({ playlist, onMiseAJour, notifier }) {
                   onClick={sauvegarderPlaylist}
                   disabled={sauvegarde}
                 >
-                  {sauvegarde ? "Enregistrement…" : "Enregistrer"}
+                  {sauvegarde ? "Enregistrement..." : "Enregistrer"}
                 </button>
                 <button
                   className="admin-btn admin-btn--ghost admin-btn--sm"
@@ -300,7 +296,7 @@ function CartePlaylist({ playlist, onMiseAJour, notifier }) {
                     setEnEdition(false);
                   }}
                 >
-                  Annuler
+                  annuler
                 </button>
               </div>
             </>
@@ -321,7 +317,7 @@ function CartePlaylist({ playlist, onMiseAJour, notifier }) {
               className="admin-btn admin-btn--ghost admin-btn--sm"
               onClick={() => setEnEdition(true)}
             >
-              Modifier
+              modifier
             </button>
           )}
           <input
@@ -335,7 +331,7 @@ function CartePlaylist({ playlist, onMiseAJour, notifier }) {
             className="admin-btn admin-btn--ghost admin-btn--sm"
             onClick={() => champFichier.current?.click()}
           >
-            Changer l'image
+            changer l'image
           </button>
           <button
             className="admin-btn admin-btn--ghost admin-btn--sm"
@@ -352,16 +348,15 @@ function CartePlaylist({ playlist, onMiseAJour, notifier }) {
       {videosAffichees && (
         <div className="admin-videos-list">
           {chargementVideos ? (
-            <div className="admin-loading"><Spinner /> Chargement…</div>
+            <div className="admin-loading"><Spinner /> chargement...</div>
           ) : videos?.length === 0 ? (
-            <p className="admin-empty">Aucune vidéo dans cette playlist.</p>
+            <p className="admin-empty">pas de video dans la playlist</p>
           ) : (
             videos?.map((video) => (
               <LigneVideo
                 key={video.id}
                 video={video}
                 onMiseAJour={mettreAJourVideo}
-                onSuppression={supprimerVideoLocale}
                 notifier={notifier}
               />
             ))
@@ -384,7 +379,7 @@ function LigneVideo({ video, onMiseAJour, onSuppression, notifier }) {
     setSauvegarde(true);
     try {
       const videoModifiee = await adminVideosApi.modifier(video.id, { title: titre });
-      notifier("ok", "Titre mis à jour");
+      notifier("ok", "titre modifie");
       setEnEdition(false);
       onMiseAJour(videoModifiee);
     } catch (err) {
@@ -394,27 +389,16 @@ function LigneVideo({ video, onMiseAJour, onSuppression, notifier }) {
     }
   }
 
-  async function supprimerVideo() {
-    if (!window.confirm(`Supprimer définitivement "${video.title}" ?`)) return;
-    try {
-      await adminVideosApi.supprimer(video.id);
-      onSuppression(video.id);
-      notifier("ok", "Vidéo supprimée");
-    } catch (err) {
-      notifier("err", err.message);
-    }
-  }
-
   async function basculerVisibilite() {
     try {
       if (video.masquee) {
         const videoModifiee = await adminVideosApi.restaurer(video.id);
         onMiseAJour({ ...videoModifiee, masquee: false });
-        notifier("ok", "Vidéo remise en ligne");
+        notifier("ok", "video visible sur le site");
       } else {
         await adminVideosApi.masquer(video.id);
         onMiseAJour({ ...video, masquee: true });
-        notifier("ok", "Vidéo masquée du site");
+        notifier("ok", "video masquee du site");
       }
     } catch (err) {
       notifier("err", err.message);
@@ -436,7 +420,7 @@ function LigneVideo({ video, onMiseAJour, onSuppression, notifier }) {
           <span className="admin-video-title">{video.title}</span>
         )}
         <span className="admin-video-date">{video.publishedAt}</span>
-        {video.masquee && <Badge ok={false} texte="Masquée" />}
+        {video.masquee && <Badge ok={false} texte="masquee" />}
       </div>
 
       <div className="admin-video-actions">
@@ -447,13 +431,13 @@ function LigneVideo({ video, onMiseAJour, onSuppression, notifier }) {
               onClick={sauvegarderVideo}
               disabled={sauvegarde}
             >
-              {sauvegarde ? "…" : "OK"}
+              {sauvegarde ? "..." : "ok"}
             </button>
             <button
               className="admin-btn admin-btn--ghost admin-btn--sm"
               onClick={() => { setTitre(video.title); setEnEdition(false); }}
             >
-              Annuler
+              annuler
             </button>
           </>
         ) : (
@@ -461,20 +445,14 @@ function LigneVideo({ video, onMiseAJour, onSuppression, notifier }) {
             className="admin-btn admin-btn--ghost admin-btn--sm"
             onClick={() => setEnEdition(true)}
           >
-            Renommer
+            renommer
           </button>
         )}
         <button
           className={`admin-btn admin-btn--sm ${video.masquee ? "admin-btn--primary" : "admin-btn--danger-ghost"}`}
           onClick={basculerVisibilite}
         >
-          {video.masquee ? "Remettre en ligne" : "Masquer"}
-        </button>
-        <button
-          className="admin-btn admin-btn--danger-ghost admin-btn--sm"
-          onClick={supprimerVideo}
-        >
-          Supprimer
+          {video.masquee ? "rendre visible" : "masquer"}
         </button>
       </div>
     </div>

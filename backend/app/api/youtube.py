@@ -70,7 +70,7 @@ class SynchroniserYoutube(Resource):
                 )
                 db.session.add(playlist)
             else:
-                if not playlist.miniature_url.startwith("/api/"):
+                if not playlist.miniature_url.startswith("/api/"):
                     playlist.miniature_url = miniature
                 playlist.ordre = ordre
 
