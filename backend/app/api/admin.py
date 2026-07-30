@@ -64,11 +64,11 @@ class ImagePlaylist(Resource):
         
         playlist = Playlist.query.get_or_404(playlist_id)
 
-        file = request.files.get("image")
-        if not file:
+        image = request.files.get("image")
+        if not image:
             return {"erreur": "aucune image recu"}, 400
 
-        ext = file.filename.rsplit(".", 1)[-1]       # rsplit = right split (coupe à partir de la droite)
+        ext = image.filename.rsplit(".", 1)[-1]       # rsplit = right split (coupe à partir de la droite)
         
         if ext.lower() not in ["jpg", "jpeg", "png", "webp", "gif"]:
             return {"erreur": "format de fichier non supporte"}, 400
@@ -81,7 +81,7 @@ class ImagePlaylist(Resource):
                 os.remove(os.path.join(upload_folder, file))
 
         path = os.path.join(upload_folder, f"{playlist_id}.{ext.lower()}")
-        file.save(path)
+        image.save(path)
 
         playlist.miniature_url = f"/api/playlists/{playlist_id}/miniature"
         db.session.commit()

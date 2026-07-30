@@ -25,10 +25,12 @@
     position: absolute;
     inset: 0 0 0 0;
     pointer-events: none; /* Les slides inactives ne bloquent pas les clics */
+    z-index: 0;
 }
 
 .slider-component .slider-list .slider-item:nth-child(1) {
     pointer-events: auto; /* Seule la slide active est cliquable */
+    z-index: 1;
 }
 
 .slider-component .slider-item img {
@@ -293,48 +295,19 @@
     animation-delay: 0.1s;
 }
 
-/* clique next - Animations de transition */
-.slider-component.next .slider-item:nth-child(1) img {
-    width: 150px;
-    height: 220px;
-    position: absolute;
-    left: 50%;
-    bottom: 50px;
-    border-radius: 20px;
-    animation: sliderShowImage 0.5s linear 1 forwards;
+.slider-component .slider-list .slider-item img {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    filter: brightness(0.8);
+    opacity: 0;
+    transform: scale(1.04);
+    transition: opacity 1s ease, transform 6s ease-out;
 }
 
-@keyframes sliderShowImage {
-    to {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        border-radius: 0;
-    }
-}
-
-/* Animations de transition pour les clics next */
-.slider-component.next .slider-item:nth-child(1) img {
-    width: 150px;
-    height: 220px;
-    position: absolute;
-    left: 50%;
-    bottom: 50px;
-    border-radius: 20px;
-    animation: sliderShowImage 0.5s linear 1 forwards;
-}
-
-@keyframes sliderShowImage {
-    to {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        border-radius: 0;
-    }
+.slider-component .slider-list .slider-item:nth-child(1) img {
+    opacity: 1;
+    transform: scale(1);
 }
 
 .slider-component.next .slider-miniature {
