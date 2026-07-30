@@ -3,6 +3,7 @@ import uuid
 import re
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import validates
+from app.models.role import Role
 
 
 class User(db.Model):
@@ -11,6 +12,7 @@ class User(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     username = db.Column(db.String(256), unique=True, nullable=False)
     mot_de_passe = db.Column(db.String(256), nullable=False)
+    role = db.Column(db.Enum(Role), nullable=False, default=Role.STAGIAIRE)
 
     @validates('mot_de_passe')
     def validatePassword(self, key, value):
@@ -31,7 +33,7 @@ class User(db.Model):
     @staticmethod
     def hash_password(password):
         """hash le mot de passe avant de le stocker en BDD"""
-        return generate_password_hash(password)
+        return generate_password_hash(password, method="pbkdf2:sha256:600000")
 
     def verify_password(self, password):
         """verifie que le mot de passe correspond au hash en BDD (lors de la connexion)"""

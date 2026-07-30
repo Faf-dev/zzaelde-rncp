@@ -3,6 +3,7 @@ from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import create_access_token, jwt_required
 
 from app import db
+from app import limiter
 from app.models.user import User
 
 auth_ns = Namespace("auth", path="/api/auth", description="Authentification")
@@ -22,6 +23,7 @@ password_change_model = auth_ns.model("PasswordChange", {
 
 @auth_ns.route("/login")
 class Login(Resource):
+    @limiter.limit("5 per minute")  # Limite à 5 tentatives de connexion par minute
     @auth_ns.expect(login_model)
     def post(self):
         """connexion de zzaelde + token jwt"""
@@ -29,12 +31,12 @@ class Login(Resource):
         nom = data.get("username", "").strip()
         mot_de_passe = data.get("password", "")
 
-        admin = User.query.get(nom)
+        user = User.query.filter_by(username=nom).first()
 
-        if admin is None or not admin.verify_password(mot_de_passe):
+        if user is None or not user.verify_password(mot_de_passe):
             return {"erreur": "identifiants incorrect"}, 401
 
-        token = create_access_token(identity=nom)
+        token = create_access_token(identity=user.id)
         return {"access_token": token, "user": {"username": nom}}, 200
 
 
@@ -51,14 +53,14 @@ class ChangerMotDePasse(Resource):
         new_password = data.get("new_password", "")
 
         if not actual_password or not new_password:
-            return {"erreur": "les deux champs doivent etre rempli"}, 400
+            return {"erreur": "les deux champs doivent être remplis."}, 400
 
-        nom = get_jwt_identity()
-        admin = User.query.get(nom)
+        id_user = get_jwt_identity()
+        user = User.query.get(id_user)
 
-        if not admin.verify_password(actual_password):
+        if user is None or not user.verify_password(actual_password):
             return {"erreur": "ancien mot de passe incorect"}, 401
 
-        admin.mot_de_passe = User.hash_password(new_password)
+        user.mot_de_passe = new_password
         db.session.commit()
         return {"message": "mot de passe mis a jour"}, 200

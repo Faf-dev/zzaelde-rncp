@@ -2,9 +2,12 @@ import os
 from flask import request, current_app
 from flask_restx import Namespace, Resource
 from flask_jwt_extended import jwt_required
+
 from app import db
 from app.models.playlist import Playlist
 from app.models.video import Video
+from app.models.role import Role
+from app.utils.check_role import check_role
 
 admin_ns = Namespace("admin", path="/api/admin", description="Administration")
 
@@ -14,6 +17,10 @@ class GetPlaylists(Resource):
     @jwt_required()
     def get(self):
         """récupère les playlist pour l'interface de zzaelde"""
+
+        if check_role([Role.ADMIN, Role.ZZAELDE, Role.STAGIAIRE]) is None:
+            return {"erreur": "acces refuse"}, 403
+
         playlists = Playlist.query.order_by(Playlist.ordre.asc(), Playlist.titre.asc()).all()
         return [playlist.to_dict() for playlist in playlists], 200
 
@@ -23,6 +30,10 @@ class UpdatePlaylist(Resource):
     @jwt_required()
     def patch(self, playlist_id):
         """modifie le titre ou la description d'une playlist"""
+
+        if check_role([Role.ADMIN, Role.ZZAELDE]) is None:
+            return {"erreur": "acces refuse"}, 403
+
         playlist = Playlist.query.get_or_404(playlist_id)
         data = request.get_json(silent=True) or {}
 
@@ -47,6 +58,10 @@ class ImagePlaylist(Resource):
     @admin_ns.response(404, "playlist introuvable")
     def put(self, playlist_id):
         """remplace la minia d'une playlist"""
+
+        if check_role([Role.ADMIN, Role.ZZAELDE]) is None:
+            return {"erreur": "acces refuse"}, 403
+        
         playlist = Playlist.query.get_or_404(playlist_id)
 
         file = request.files.get("image")
@@ -80,6 +95,10 @@ class GetPlaylistVideos(Resource):
     @admin_ns.response(404, "playlist introuvable")
     def get(self, playlist_id):
         """liste toutes les video d'une playlist (masquee ou non)"""
+
+        if check_role([Role.ADMIN, Role.ZZAELDE, Role.STAGIAIRE]) is None:
+            return {"erreur": "acces refuse"}, 403
+
         playlist = Playlist.query.get_or_404(playlist_id)
 
         if playlist:
@@ -96,6 +115,10 @@ class UpdateVideo(Resource):
     @admin_ns.response(400, "un probleme est survenue")
     def patch(self, video_id):
         """modifie le titre d'une video"""
+
+        if check_role([Role.ADMIN, Role.ZZAELDE]) is None:
+            return {"erreur": "acces refuse"}, 403
+
         video = Video.query.get_or_404(video_id)
         data = request.get_json(silent=True) or {}
 
@@ -116,6 +139,10 @@ class MasquerVideo(Resource):
     @admin_ns.response(404, "video introuvable")
     def post(self, video_id):
         """masque une vidéo du site (elle reste en BDD)"""
+
+        if check_role([Role.ADMIN, Role.ZZAELDE]) is None:
+            return {"erreur": "acces refuse"}, 403
+        
         video = Video.query.get_or_404(video_id)
 
         if video and video.masquee is False:
@@ -132,6 +159,10 @@ class RestaurerVideo(Resource):
     @admin_ns.response(404, "video introuvable")
     def post(self, video_id):
         """rend une video visible"""
+
+        if check_role([Role.ADMIN, Role.ZZAELDE]) is None:
+            return {"erreur": "acces refuse"}, 403
+
         video = Video.query.get_or_404(video_id)
 
         if video and video.masquee:

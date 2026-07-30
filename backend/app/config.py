@@ -22,5 +22,7 @@ class Config:
     YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY", "")
     YOUTUBE_CHANNEL_ID = os.environ.get("YOUTUBE_CHANNEL_ID", "")
 
-    ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME")
-    ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
+    ZZAELDE_ID = os.environ.get("ZZAELDE_ID")
+    ZZAELDE_USERNAME = os.environ.get("ZZAELDE_USERNAME")
+    ZZAELDE_PASSWORD = os.environ.get("ZZAELDE_PASSWORD")
+    ZZAELDE_ROLE = os.environ.get("ZZAELDE_ROLE")
