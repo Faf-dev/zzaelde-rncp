@@ -2,18 +2,19 @@
 .footer {
    padding: 3rem 0 0;
    margin-top: auto;
-   background-color: black;
+   background: linear-gradient(to top, #e6dbbf, #b3a2834d);
+   border-top: 1px #000000;
 }
 
 .footer-copyright {
     margin: 0;
     padding-top: 0.2rem;
     font-size: 0.7rem;
-    color: white;
+    color: black;
 }
 
 .footer-address {
-    color: white;
+    color: black;
 }
 
 .footer ul {
@@ -43,9 +44,9 @@
 .footer-nav-link {
     display: inline-block;
     text-decoration: none;
-    color: #e7dbc1;
+    color: black;
     font-size: 0.7rem;
-    white-space: nowrap; /* Évite la coupure des liens */
+    black-space: nowrap; /* Évite la coupure des liens */
 }
 
 .nav-item {
@@ -88,5 +89,5 @@
 }
 
 .social-link > svg {
-    fill: lightgrey;
+    fill: black;
 }

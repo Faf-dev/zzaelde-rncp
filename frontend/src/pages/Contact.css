@@ -8,7 +8,7 @@ header svg {
 }
 
 .ContactPage {
-    min-height: 100vh;
+    min-height: auto;
     display: flex;
     flex-direction: column;
 }

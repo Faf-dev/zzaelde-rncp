@@ -1,9 +1,10 @@
 .review-page h1 {
     text-align: center;
     padding: 2rem;
-    background-color: black;
-    color: white;
+    background: linear-gradient(to top, #eee6d2 0%, #e6dbbf 100%);
+    color: rgb(0, 10, 19);
     margin: 0;
+    box-shadow: inset 0 -0.75rem 1.5rem rgba(0, 10, 19, 0.08);
 }
 
 .review-page {
@@ -167,6 +168,19 @@
 
     .review-page .review-track .review-comment p {
         font-size: 1rem;
+    }
+
+    .review-page .review-track button {
+        font-size: 1rem;
+        padding: 0.7rem 1.5rem;
+    }
+
+    .review-page .review-track .review-link {
+        position: relative;
+        z-index: 2; /* reste au-dessus du commentaire même quand celui-ci s'affiche */
+        display: block;
+        text-decoration: none;
+        padding: 0 2rem 2rem;
     }
 }
 

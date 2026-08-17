@@ -152,6 +152,11 @@ class SynchroniserYoutube(Resource):
             access_token
         )
 
+        # On decale temporairement les ordres existants dans le negatif (donc toujours uniques)
+        # pour eviter un conflit avec la contrainte unique le temps de tout reassigner
+        db.session.query(Playlist).update({Playlist.ordre: -(Playlist.ordre + 1)})
+        db.session.flush()
+
         for ordre, item in enumerate(resultats.get("items", [])):
             # On passe les playlists "privées", on ne garde que public ou unlisted (non répertorié)
             if item.get("status", {}).get("privacyStatus") == "private":

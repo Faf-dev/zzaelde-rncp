@@ -57,10 +57,13 @@
     font-weight: bold;
     font-size: 5em;
     line-height: 1.3em;
+    color: #e7dbc1;
 }
 
-.slider-component .slider-topic {
-    color: #e7dbc1;
+.slider-component .slider-description {
+    font-weight: bold;
+    font-size: 1.5em;
+    line-height: 1.3em;
 }
 
 .slider-component .slider-buttons {
@@ -95,6 +98,7 @@
     font-weight: 600;
     letter-spacing: 0.1rem;
     transition: background-color 0.2s ease;
+    cursor: pointer;
 }
 
 .slider-component .slider-buttons .Detail-button:hover {
@@ -137,7 +141,7 @@
 .slider-component .slider-miniature {
     position: absolute;
     bottom: 50px;
-    left: 50%;
+    left: 35%;
     width: max-content;
     z-index: 100;
     display: flex;
@@ -194,8 +198,8 @@
 /* arrows */
 .slider-component .slider-arrows {
     position: absolute;
-    top: 86%;
-    right: 55%;
+    top: 73%;
+    right: 48%;
     width: auto;
     max-width: 30%;
     display: flex;
@@ -209,11 +213,11 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 1px solid #00000059;
-    background: rgba(156, 156, 156, 0.419);
-    backdrop-filter: blur(2px);
+    border: 1.3px solid #0000009c;
+    background: #e7dbc1;;
+    backdrop-filter: blur(10px);
     font-family: monospace;
-    color: #fff;
+    color: #000b13;
     font-weight: bold;
     font-size: large;
     transition: 0.5s;
@@ -305,6 +309,22 @@
     .container {
         justify-content: center; /* Centre le contenu verticalement */
     }
+
+    /* arrows */
+    .slider-component .slider-arrows {
+        top: 65%;
+    }
+
+    .slider-component .slider-arrows .slider-arrow-btn {
+        height: 2rem;
+        width: 2rem;
+        font-size: 1rem;
+    }
+
+    /* Miniatures */
+    .slider-component .slider-miniature {
+        left: 31%;
+    }
 }
 
 
@@ -312,9 +332,27 @@
 @media (max-width: 768px) {
 
     .slider-component .slider-buttons .Detail-button {
-        font-size: 0.6rem;
+        font-size: 0.8rem;
         padding: 0.8rem 2rem;
         letter-spacing: 0.05rem;
         border-width: 0.08em;
+    }
+
+    
+    /* arrows */
+    .slider-component .slider-arrows {
+        top: 69%;
+        left: 45%;
+    }
+
+    .slider-component .slider-arrows .slider-arrow-btn {
+        height: 2rem;
+        width: 2rem;
+        font-size: 1rem;
+    }
+
+    /* Miniatures */
+    .slider-component .slider-miniature {
+        left: 25%;
     }
 }

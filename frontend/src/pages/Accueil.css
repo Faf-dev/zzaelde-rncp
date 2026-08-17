@@ -43,22 +43,32 @@
   margin: 0;
 }
 
-/* Section Contact avec hauteur minimale */
+/* Le header est fixe : laisser une marge lorsque la navigation atteint une cible. */
+#accueil,
 #contact {
-  min-height: 100vh;
-  background-color: white;
+  scroll-margin-top: 6rem;
 }
 
-/* Section 3 : "A propos" + "Ils m'ont fait confiance" partagent le même écran */
+/* La hauteur de Contact suit le formulaire pour éviter un grand vide avant le footer. */
+#contact {
+  min-height: auto;
+}
+
+#contact .contact-form-container {
+  margin-bottom: 2rem;
+}
+
+/* A propos garde sa disposition, mais sa hauteur suit son contenu. */
 .a-propos-section {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: auto;
 }
 
 .a-propos-section .a-propos {
-  flex: 1;
+  flex: 0 0 auto;
   display: flex;
+  min-height: calc(100vh - 6rem);
 }
 
 .a-propos-section .a-propos main {
@@ -109,6 +119,6 @@
   }
 
   .a-propos-section .a-propos main {
-    min-height: 100vh;
+    min-height: auto;
   }
 }
