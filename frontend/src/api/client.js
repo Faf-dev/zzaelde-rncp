@@ -59,6 +59,7 @@ export const authApi = {
 export const publicApi = {
   toutesLesPlaylists: () => request("/api/playlists"),
   unePlaylist: (id) => request(`/api/playlists/${id}`),
+  tousLesTestimonials: () => request("/api/testimonials"),
 };
 
 // -- Administration : Playlists -----------------------------------------------
@@ -104,4 +105,46 @@ export const adminVideosApi = {
 
 export const youtubeApi = {
   synchroniser: () => request("/api/youtube/refresh", { method: "POST" }),
+};
+
+// -- Administration : Testimonials ---------------------------------------------
+
+export const LINK_TYPES_TESTIMONIALS = [
+  "tiktok",
+  "youtube",
+  "instagram",
+  "twitter",
+  "facebook",
+  "snapchat",
+  "twitch",
+  "linkedin",
+  "discord",
+  "site",
+];
+
+export const adminTestimonialsApi = {
+  lister: () => request("/api/admin/testimonials"),
+
+  creer: (donnees) =>
+    request("/api/admin/testimonials", {
+      method: "POST",
+      body: JSON.stringify(donnees),
+    }),
+
+  modifier: (id, donnees) =>
+    request(`/api/admin/testimonials/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(donnees),
+    }),
+
+  changerImage: (id, fichier) => {
+    const formulaire = new FormData();
+    formulaire.append("image", fichier);
+    return request(`/api/admin/testimonials/${id}/image`, {
+      method: "PUT",
+      body: formulaire,
+    });
+  },
+
+  supprimer: (id) => request(`/api/admin/testimonials/${id}`, { method: "DELETE" }),
 };

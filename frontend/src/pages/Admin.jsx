@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { adminPlaylistsApi, adminVideosApi, youtubeApi, authApi } from "../api/client";
+import { adminPlaylistsApi, adminVideosApi, youtubeApi, authApi, adminTestimonialsApi, LINK_TYPES_TESTIMONIALS } from "../api/client";
 import { getImageUrl } from "../utils/imageUtils";
 import "./Admin.css";
 
@@ -36,8 +36,12 @@ export default function Admin() {
   const [synchronisation, setSynchronisation] = useState(false);
   const [notification, setNotification] = useState(null);
 
+  const [testimonials, setTestimonials] = useState([]);
+  const [chargementTestimonials, setChargementTestimonials] = useState(true);
+
   useEffect(() => {
     chargerPlaylists();
+    chargerTestimonials();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -55,6 +59,18 @@ export default function Admin() {
       afficherNotification("err", `Erreur de chargement : ${err.message}`);
     } finally {
       setChargement(false);
+    }
+  }
+
+  async function chargerTestimonials() {
+    setChargementTestimonials(true);
+    try {
+      const donnees = await adminTestimonialsApi.lister();
+      setTestimonials(donnees);
+    } catch (err) {
+      afficherNotification("err", `Erreur de chargement des avis : ${err.message}`);
+    } finally {
+      setChargementTestimonials(false);
     }
   }
 
@@ -151,6 +167,28 @@ export default function Admin() {
                   key={playlist.id}
                   playlist={playlist}
                   onMiseAJour={chargerPlaylists}
+                  notifier={afficherNotification}
+                />
+              ))}
+            </div>
+          )}
+        </section>
+
+        {/* Section : gestion des testimonials/avis */}
+        <section className="admin-section">
+          <h2 className="admin-section-title">avis clients</h2>
+          <FormNouveauTestimonial notifier={afficherNotification} onCree={chargerTestimonials} />
+          {chargementTestimonials ? (
+            <div className="admin-loading"><Spinner /> chargement...</div>
+          ) : testimonials.length === 0 ? (
+            <p className="admin-empty">aucun avis pour le moment.</p>
+          ) : (
+            <div className="admin-playlists">
+              {testimonials.map((avis) => (
+                <CarteTestimonial
+                  key={avis.id}
+                  avis={avis}
+                  onMiseAJour={chargerTestimonials}
                   notifier={afficherNotification}
                 />
               ))}
@@ -470,6 +508,233 @@ function LigneVideo({ video, onMiseAJour, onSuppression, notifier }) {
         >
           {video.masquee ? "rendre visible" : "masquer"}
         </button>
+      </div>
+    </div>
+  );
+}
+
+
+// -- Formulaire de création d'un avis -----------------------------------------
+
+function FormNouveauTestimonial({ notifier, onCree }) {
+  const [nom, setNom] = useState("");
+  const [texte, setTexte] = useState("");
+  const [lien, setLien] = useState("");
+  const [typeLien, setTypeLien] = useState(LINK_TYPES_TESTIMONIALS[0]);
+  const [envoi, setEnvoi] = useState(false);
+
+  async function soumettre(e) {
+    e.preventDefault();
+    setEnvoi(true);
+    try {
+      await adminTestimonialsApi.creer({ name: nom, text: texte, link: lien, link_type: typeLien });
+      notifier("ok", "avis cree");
+      setNom("");
+      setTexte("");
+      setLien("");
+      setTypeLien(LINK_TYPES_TESTIMONIALS[0]);
+      onCree();
+    } catch (err) {
+      notifier("err", err.message);
+    } finally {
+      setEnvoi(false);
+    }
+  }
+
+  return (
+    <form className="admin-testimonial-form" onSubmit={soumettre}>
+      <input
+        className="admin-input"
+        placeholder="nom du client"
+        value={nom}
+        onChange={(e) => setNom(e.target.value)}
+        maxLength={256}
+        required
+      />
+      <textarea
+        className="admin-textarea"
+        placeholder="commentaire du client"
+        value={texte}
+        onChange={(e) => setTexte(e.target.value)}
+        maxLength={256}
+        rows={2}
+        required
+      />
+      <input
+        className="admin-input"
+        placeholder="https://..."
+        type="url"
+        value={lien}
+        onChange={(e) => setLien(e.target.value)}
+        maxLength={256}
+        required
+      />
+      <select
+        className="admin-input"
+        value={typeLien}
+        onChange={(e) => setTypeLien(e.target.value)}
+      >
+        {LINK_TYPES_TESTIMONIALS.map((type) => (
+          <option key={type} value={type}>{type}</option>
+        ))}
+      </select>
+      <button className="admin-btn admin-btn--primary admin-btn--sm" type="submit" disabled={envoi}>
+        {envoi ? "creation..." : "ajouter un avis"}
+      </button>
+    </form>
+  );
+}
+
+
+// -- Carte d'un avis -----------------------------------------------------------
+
+function CarteTestimonial({ avis, onMiseAJour, notifier }) {
+  const [enEdition, setEnEdition] = useState(false);
+  const [nom, setNom] = useState(avis.name);
+  const [texte, setTexte] = useState(avis.text);
+  const [lien, setLien] = useState(avis.link);
+  const [typeLien, setTypeLien] = useState(avis.link_type);
+  const [sauvegarde, setSauvegarde] = useState(false);
+  const champFichier = useRef(null);
+
+  async function sauvegarderTestimonial() {
+    setSauvegarde(true);
+    try {
+      await adminTestimonialsApi.modifier(avis.id, { name: nom, text: texte, link: lien, link_type: typeLien });
+      notifier("ok", "avis mis a jour");
+      setEnEdition(false);
+      onMiseAJour();
+    } catch (err) {
+      notifier("err", err.message);
+    } finally {
+      setSauvegarde(false);
+    }
+  }
+
+  async function changerImage(e) {
+    const fichier = e.target.files?.[0];
+    if (!fichier) return;
+    try {
+      await adminTestimonialsApi.changerImage(avis.id, fichier);
+      notifier("ok", "image mise a jour");
+      onMiseAJour();
+    } catch (err) {
+      notifier("err", err.message);
+    }
+    e.target.value = "";
+  }
+
+  async function supprimer() {
+    if (!window.confirm(`Supprimer definitivement l'avis de '${avis.name}' ?`)) return;
+    try {
+      await adminTestimonialsApi.supprimer(avis.id);
+      notifier("ok", "avis supprime");
+      onMiseAJour();
+    } catch (err) {
+      notifier("err", err.message);
+    }
+  }
+
+  return (
+    <div className="admin-playlist-card">
+      <div className="admin-playlist-header">
+        <img className="admin-playlist-thumb" src={getImageUrl(avis.image)} alt={avis.name} />
+
+        <div className="admin-playlist-meta">
+          {enEdition ? (
+            <>
+              <input
+                className="admin-input"
+                value={nom}
+                onChange={(e) => setNom(e.target.value)}
+                placeholder="nom"
+                maxLength={256}
+              />
+              <textarea
+                className="admin-textarea"
+                value={texte}
+                onChange={(e) => setTexte(e.target.value)}
+                placeholder="commentaire"
+                maxLength={256}
+                rows={2}
+              />
+              <input
+                className="admin-input"
+                value={lien}
+                onChange={(e) => setLien(e.target.value)}
+                placeholder="https://..."
+                type="url"
+                maxLength={256}
+              />
+              <select
+                className="admin-input"
+                value={typeLien}
+                onChange={(e) => setTypeLien(e.target.value)}
+              >
+                {LINK_TYPES_TESTIMONIALS.map((type) => (
+                  <option key={type} value={type}>{type}</option>
+                ))}
+              </select>
+              <div className="admin-playlist-meta-actions">
+                <button
+                  className="admin-btn admin-btn--primary admin-btn--sm"
+                  onClick={sauvegarderTestimonial}
+                  disabled={sauvegarde}
+                >
+                  {sauvegarde ? "enregistrement..." : "enregistrer"}
+                </button>
+                <button
+                  className="admin-btn admin-btn--ghost admin-btn--sm"
+                  onClick={() => {
+                    setNom(avis.name);
+                    setTexte(avis.text);
+                    setLien(avis.link);
+                    setTypeLien(avis.link_type);
+                    setEnEdition(false);
+                  }}
+                >
+                  annuler
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <span className="admin-playlist-title">{avis.name}</span>
+              <span className="admin-playlist-desc">{avis.text}</span>
+              <span className="admin-playlist-desc">{avis.link} ({avis.link_type})</span>
+            </>
+          )}
+        </div>
+
+        <div className="admin-playlist-actions">
+          {!enEdition && (
+            <button
+              className="admin-btn admin-btn--ghost admin-btn--sm"
+              onClick={() => setEnEdition(true)}
+            >
+              modifier
+            </button>
+          )}
+          <input
+            ref={champFichier}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            style={{ display: "none" }}
+            onChange={changerImage}
+          />
+          <button
+            className="admin-btn admin-btn--ghost admin-btn--sm"
+            onClick={() => champFichier.current?.click()}
+          >
+            changer l'image
+          </button>
+          <button
+            className="admin-btn admin-btn--danger-ghost admin-btn--sm"
+            onClick={supprimer}
+          >
+            supprimer
+          </button>
+        </div>
       </div>
     </div>
   );

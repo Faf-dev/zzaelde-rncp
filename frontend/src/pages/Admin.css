@@ -263,6 +263,14 @@
 
 .admin-textarea:focus { border-color: #888; }
 
+.admin-testimonial-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 480px;
+  margin-bottom: 1.25rem;
+}
+
 /* ── Video list ──────────────────────────────────────────────────────────── */
 .admin-videos-list {
   border-top: 1px solid #222;

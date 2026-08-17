@@ -1,31 +1,39 @@
+import { useEffect, useState } from "react";
 import "./testimonials.css"
 import "aos/dist/aos.css";
+import { publicApi } from "../../api/client";
+import { getImageUrl } from "../../utils/imageUtils";
 
-const reviews = [
-    {
-        image: "/image/testimonials/ombredinazuma.jpeg",
-        name: "L'Ombre d'Inazuma",
-        text: "\"Merci pour la qualités des vidéos que tu produis, je continuerai de bosser avec toi!\"",
-        link: "https://www.tiktok.com/@lombredinazuma",
-        linktype: "TikTok",
-    },
-    {
-        image: "/image/testimonials/block13officielle.jpeg",
-        name: "Block 13 RP Officiel",
-        text: "\"Un travail de pro, tout simplement.\"",
-        link: "https://www.tiktok.com/@block13officielle",
-        linktype: "TikTok",
-    },
-    {
-        image: "/image/testimonials/tempestefa.jpeg",
-        name: "Tempeste FA",
-        text: "\"C'était un plaisir de travailler avec Zzaelde, il est sympathique et fait du travail de qualité!\"",
-        link: "https://www.tiktok.com/@tempeste_fa",
-        linktype: "YouTube",
-    },
-];
+const LABELS_LIEN = {
+    tiktok: "TikTok",
+    youtube: "YouTube",
+    instagram: "Instagram",
+    twitter: "Twitter",
+    facebook: "Facebook",
+    snapchat: "Snapchat",
+    twitch: "Twitch",
+    linkedin: "LinkedIn",
+    discord: "Discord",
+    site: "Site",
+};
 
 export default function Testimonials () {
+    const [reviews, setReviews] = useState([]);
+
+    useEffect(() => {
+        publicApi.tousLesTestimonials()
+            .then(setReviews)
+            .catch(() => setReviews([]));
+    }, []);
+
+    if (reviews.length === 0) {
+        return (
+            <div className="review-page" id="review-page">
+                <h1 className="titre-review" id="titre-testimonials"> UN MONTEUR AU SERVICE DE VOS BESOINS</h1>
+            </div>
+        );
+    }
+
     // Répété plusieurs fois pour garantir une piste assez large et éviter tout "blanc" pendant la boucle
     const loopedReviews = [...reviews, ...reviews, ...reviews, ...reviews];
 
@@ -35,16 +43,16 @@ export default function Testimonials () {
             <div className="review-marquee" id="review-box-container">
                 <div className="review-track">
                     {loopedReviews.map((review, index) => (
-                        <div className="review-container" key={`${review.name}-${index}`}>
+                        <div className="review-container" key={`${review.id}-${index}`}>
                             <div className="review-main">
-                                <img src={review.image} alt="" loading="lazy"/>
+                                <img src={getImageUrl(review.image)} alt="" loading="lazy"/>
                                 <h3>{review.name}</h3>
                             </div>
                             <div className="review-comment">
                                 <p>{review.text}</p>
                             </div>
                             <a className="review-link" href={review.link}>
-                                <button className="social-link">{review.linktype}</button>
+                                <button className="social-link">{LABELS_LIEN[review.link_type] || review.link_type}</button>
                             </a>
                         </div>
                     ))}

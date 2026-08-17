@@ -1,15 +1,23 @@
 import os
+from urllib.parse import urlparse
 from flask import request, current_app
 from flask_restx import Namespace, Resource
 from flask_jwt_extended import jwt_required
 
-from app import db
+from app import db, limiter
 from app.models.playlist import Playlist
+from app.models.review import Review, ALLOWED_LINK_TYPES
 from app.models.video import Video
 from app.models.role import Role
-from app.utils.check_role import check_role
+from app.utils.check_role import check_role, get_zzaelde_user
 
 admin_ns = Namespace("admin", path="/api/admin", description="Administration")
+
+
+def valider_lien(lien):
+    """verifie que le lien est bien une url http(s) absolue (bloque javascript:, data:, etc.)"""
+    analyse = urlparse(lien)
+    return analyse.scheme in ("http", "https") and bool(analyse.netloc)
 
 
 @admin_ns.route("/playlists", methods=["GET"])
@@ -170,3 +178,195 @@ class RestaurerVideo(Resource):
 
         db.session.commit()
         return {"message": f"la video '{video.titre}' est visible"}, 200
+
+
+@admin_ns.route("/testimonials", methods=["GET"])
+class GetTestimonials(Resource):
+    @jwt_required()
+    def get(self):
+        """récupère les avis pour l'interface de zzaelde"""
+
+        if check_role([Role.ADMIN, Role.ZZAELDE, Role.STAGIAIRE]) is None:
+            return {"erreur": "acces refuse"}, 403
+
+        zzaelde = get_zzaelde_user()
+        if zzaelde is None:
+            return {"erreur": "compte zzaelde introuvable"}, 500
+
+        reviews = Review.query.filter_by(owner_id=zzaelde.id).order_by(Review.ordre.asc()).all()
+        return [review.to_dict() for review in reviews], 200
+
+
+@admin_ns.route("/testimonials", methods=["POST"])
+class CreateTestimonial(Resource):
+    @jwt_required()
+    @limiter.limit("20 per minute")
+    def post(self):
+        """crée un nouvel avis (owner_id force cote serveur, jamais fourni par le client)"""
+
+        if check_role([Role.ADMIN, Role.ZZAELDE]) is None:
+            return {"erreur": "acces refuse"}, 403
+
+        zzaelde = get_zzaelde_user()
+        if zzaelde is None:
+            return {"erreur": "compte zzaelde introuvable"}, 500
+
+        data = request.get_json(silent=True) or {}
+
+        nom = str(data.get("name", "")).strip()
+        texte = str(data.get("text", "")).strip()
+        lien = str(data.get("link", "")).strip()
+        type_lien = str(data.get("link_type", "")).strip().lower()
+
+        if not nom or len(nom) > 256:
+            return {"erreur": "le nom est invalide"}, 400
+        if not texte or len(texte) > 256:
+            return {"erreur": "le texte est invalide"}, 400
+        if not lien or len(lien) > 256 or not valider_lien(lien):
+            return {"erreur": "le lien doit etre une url http(s) valide"}, 400
+        if type_lien not in ALLOWED_LINK_TYPES:
+            return {"erreur": f"link_type doit etre l'un de : {', '.join(ALLOWED_LINK_TYPES)}"}, 400
+
+        ordre_max = db.session.query(db.func.max(Review.ordre)).filter(Review.owner_id == zzaelde.id).scalar() or 0
+
+        avis = Review(
+            name=nom,
+            text=texte,
+            link=lien,
+            link_type=type_lien,
+            ordre=ordre_max + 1,
+            owner_id=zzaelde.id,
+        )
+        db.session.add(avis)
+        db.session.commit()
+        return avis.to_dict(), 201
+
+
+@admin_ns.route("/testimonials/<string:review_id>", methods=["PATCH"])
+class UpdateTestimonial(Resource):
+    @jwt_required()
+    def patch(self, review_id):
+        """modifie un avis existant"""
+
+        if check_role([Role.ADMIN, Role.ZZAELDE]) is None:
+            return {"erreur": "acces refuse"}, 403
+
+        zzaelde = get_zzaelde_user()
+        if zzaelde is None:
+            return {"erreur": "compte zzaelde introuvable"}, 500
+
+        avis = Review.query.get_or_404(review_id)
+
+        if avis.owner_id != zzaelde.id:
+            return {"erreur": "acces refuse"}, 403
+
+        data = request.get_json(silent=True) or {}
+
+        if "name" in data:
+            nom = str(data["name"]).strip()
+            if not nom or len(nom) > 256:
+                return {"erreur": "le nom est invalide"}, 400
+            avis.name = nom
+
+        if "text" in data:
+            texte = str(data["text"]).strip()
+            if not texte or len(texte) > 256:
+                return {"erreur": "le texte est invalide"}, 400
+            avis.text = texte
+
+        if "link" in data:
+            lien = str(data["link"]).strip()
+            if not lien or len(lien) > 256 or not valider_lien(lien):
+                return {"erreur": "le lien doit etre une url http(s) valide"}, 400
+            avis.link = lien
+
+        if "link_type" in data:
+            type_lien = str(data["link_type"]).strip().lower()
+            if type_lien not in ALLOWED_LINK_TYPES:
+                return {"erreur": f"link_type doit etre l'un de : {', '.join(ALLOWED_LINK_TYPES)}"}, 400
+            avis.link_type = type_lien
+
+        if "ordre" in data:
+            try:
+                avis.ordre = int(data["ordre"])
+            except (TypeError, ValueError):
+                return {"erreur": "ordre invalide"}, 400
+
+        db.session.commit()
+        return avis.to_dict(), 200
+
+
+@admin_ns.route("/testimonials/<string:review_id>/image")
+class ImageTestimonial(Resource):
+    @jwt_required()
+    @admin_ns.response(200, "image changé")
+    @admin_ns.response(400, "un probleme est survenue")
+    @admin_ns.response(404, "avis introuvable")
+    def put(self, review_id):
+        """remplace l'image d'un avis"""
+
+        if check_role([Role.ADMIN, Role.ZZAELDE]) is None:
+            return {"erreur": "acces refuse"}, 403
+
+        zzaelde = get_zzaelde_user()
+        if zzaelde is None:
+            return {"erreur": "compte zzaelde introuvable"}, 500
+
+        avis = Review.query.get_or_404(review_id)
+
+        if avis.owner_id != zzaelde.id:
+            return {"erreur": "acces refuse"}, 403
+
+        image = request.files.get("image")
+        if not image:
+            return {"erreur": "aucune image recu"}, 400
+
+        ext = image.filename.rsplit(".", 1)[-1]
+
+        if ext.lower() not in ["jpg", "jpeg", "png", "webp", "gif"]:
+            return {"erreur": "format de fichier non supporte"}, 400
+
+        upload_folder = current_app.config["UPLOAD_FOLDER"]
+
+        # supprime les anciennes images upload de cet avis (evite les doublons)
+        for file in os.listdir(upload_folder):
+            if file.startswith(f"review_{review_id}."):
+                os.remove(os.path.join(upload_folder, file))
+
+        path = os.path.join(upload_folder, f"review_{review_id}.{ext.lower()}")
+        image.save(path)
+
+        avis.image = f"/api/testimonials/{review_id}/image"
+        db.session.commit()
+        return avis.to_dict(), 200
+
+
+@admin_ns.route("/testimonials/<string:review_id>", methods=["DELETE"])
+class DeleteTestimonial(Resource):
+    @jwt_required()
+    @admin_ns.response(200, "avis supprime")
+    @admin_ns.response(404, "avis introuvable")
+    def delete(self, review_id):
+        """supprime definitivement un avis"""
+
+        if check_role([Role.ADMIN, Role.ZZAELDE]) is None:
+            return {"erreur": "acces refuse"}, 403
+
+        zzaelde = get_zzaelde_user()
+        if zzaelde is None:
+            return {"erreur": "compte zzaelde introuvable"}, 500
+
+        avis = Review.query.get_or_404(review_id)
+
+        if avis.owner_id != zzaelde.id:
+            return {"erreur": "acces refuse"}, 403
+
+        upload_folder = current_app.config["UPLOAD_FOLDER"]
+        for file in os.listdir(upload_folder):
+            if file.startswith(f"review_{review_id}."):
+                os.remove(os.path.join(upload_folder, file))
+
+        nom = avis.name
+        db.session.delete(avis)
+        db.session.commit()
+        return {"message": f"l'avis de '{nom}' a ete supprime"}, 200
