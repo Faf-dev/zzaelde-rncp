@@ -1,6 +1,6 @@
-from flask import request
+from flask import request, jsonify
 from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import create_access_token, jwt_required, set_access_cookies, unset_jwt_cookies
 
 from app import db
 from app import limiter
@@ -37,7 +37,20 @@ class Login(Resource):
             return {"erreur": "identifiants incorrect"}, 401
 
         token = create_access_token(identity=user.id)
-        return {"access_token": token, "user": {"username": nom}}, 200
+        
+        # On attache le cookie a la reponse
+        reponse = jsonify({"user": {"username": nom}})
+        set_access_cookies(reponse, token)
+        return reponse
+
+
+@auth_ns.route("/logout")
+class Logout(Resource):
+    def post(self):
+        """Déconnecte l'utilisateur en supprimant son cookie"""
+        reponse = jsonify({"message": "deconnexion reussie"})
+        unset_jwt_cookies(reponse)
+        return reponse
 
 
 @auth_ns.route("/password")

@@ -6,52 +6,111 @@
     margin: 0;
 }
 
-.review-page .review-box-container {
-    display: flex;
-    padding: 4rem;
-    flex-wrap: wrap;
-    gap: 6rem;
-    justify-content: center;
+.review-page {
+    overflow: hidden;
 }
 
-.review-page .review-box-container .review-container {
+.review-page .review-marquee {
+    overflow: hidden;
+    width: 100%;
+    padding: 4rem 0;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%);
+}
+
+.review-page .review-track {
+    display: flex;
+    width: max-content;
+    height: 25rem;
+    gap: 4rem;
+    animation: review-scroll 60s linear infinite;
+}
+
+.review-page .review-marquee:hover .review-track {
+    animation-play-state: paused;
+}
+
+@keyframes review-scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.review-page .review-track .review-container {
+    flex: 0 0 auto;
+    width: 30rem;
     text-align: center;
-    padding: 2rem;
+    position: relative;
     border: 1px solid black;
     box-shadow: 1 1 1;
-    flex: 1 1 30rem;
     border-radius: 0.5rem;
     margin-top: 6rem;
-    margin-bottom: 6rem;
-    position: relative;
-    padding-bottom: 4rem;
+    margin-bottom: 2rem;
 }
 
-.review-page .review-box-container .review-container img {
+.review-page .review-track .review-main {
+    padding: 2rem;
+    padding-bottom: 0.5rem;
+    height: 15rem;
+    position: relative;
+}
+
+.review-page .review-track .review-container img {
     border-radius: 50%;
+    z-index : 2;
     height: 12rem;
     width: 12rem;
     margin-top: -8rem;
     object-fit: cover;
     border: 1px solid black;
+    position: relative;
 }
 
-.review-page .review-box-container .review-container h3 {
-    font-size: 2.5rem;
+.review-page .review-track .review-container h3 {
+    font-size: 2.2rem;
     color: black;
     padding: 0;
     margin: 1rem;
 }
 
-.review-page .review-box-container .review-container p {
-    font-size: 1.5rem;
-    color: black;
-    font-style: italic;
-    padding: 0;
-    margin: 0.5rem;
+.review-page .review-track .review-comment {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.97);
+    border-radius: 0.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
 }
 
-.review-page .review-box-container button {
+.review-page .review-track .review-container:hover .review-comment {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.review-page .review-track .review-comment p {
+    font-size: 1.3rem;
+    color: black;
+    font-style: italic;
+    margin: 0;
+}
+
+.review-page .review-track .review-link {
+    position: relative;
+    z-index: 2; /* reste au-dessus du commentaire même quand celui-ci s'affiche */
+    display: block;
+    text-decoration: none;
+    padding: 0 2rem 2rem;
+}
+
+.review-page .review-track button {
     position: absolute;
     pointer-events: all;
     cursor: pointer;
@@ -66,9 +125,49 @@
     transition: background-color 0.3s ease;
 }
 
-.review-page .review-box-container button:hover {
+.review-page .review-track button:hover {
     background-color: black;
     color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .review-page h1 {
+        font-size: 1.3rem;
+        padding: 1.2rem;
+    }
+
+    .review-page .review-marquee {
+        padding: 3rem 0;
+    }
+
+    .review-page .review-track {
+        gap: 1.5rem;
+        animation-duration: 18s;
+    }
+
+    .review-page .review-track .review-container {
+        width: 20rem;
+        margin-top: 4rem;
+    }
+
+    .review-page .review-track .review-main {
+        padding: 1.2rem;
+    }
+
+    .review-page .review-track .review-container img {
+        height: 8rem;
+        width: 8rem;
+        margin-top: -6rem;
+    }
+
+    .review-page .review-track .review-container h3 {
+        font-size: 1.5rem;
+    }
+
+    .review-page .review-track .review-comment p {
+        font-size: 1rem;
+    }
 }
 
 

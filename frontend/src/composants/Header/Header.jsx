@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import SocialLink from "../Social-link/SocialLink";
 import GlassButton from "../GlassButton/GlassButton";
+import TypingText from "./TypingText";
 import "./Header.css";
 
 export default function Header() {
@@ -261,7 +262,11 @@ export default function Header() {
     return (
         <>
             <header className={`header-theme-${headerTheme}`}>
-                <h1 className="logo">Zzaelde</h1>
+                <div className="logo-group">
+                    <img src="/zzaelde-logo.png" className="logo" alt="" loading="lazy" />
+                    <span className="logo-separator">|</span>
+                    <TypingText words={["Monteur vidéo", "Motion designer"]} />
+                </div>
 
                 <nav ref={navRef} className="native-nav" onMouseLeave={handleNavLeave}>
                     {/* Votre GlassButton qui se déplace */}

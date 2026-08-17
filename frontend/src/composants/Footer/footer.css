@@ -43,7 +43,7 @@
 .footer-nav-link {
     display: inline-block;
     text-decoration: none;
-    color: #ffa500;
+    color: #e7dbc1;
     font-size: 0.7rem;
     white-space: nowrap; /* Évite la coupure des liens */
 }

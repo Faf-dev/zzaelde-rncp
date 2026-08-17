@@ -13,6 +13,7 @@ class User(db.Model):
     username = db.Column(db.String(256), unique=True, nullable=False)
     mot_de_passe = db.Column(db.String(256), nullable=False)
     role = db.Column(db.Enum(Role), nullable=False, default=Role.STAGIAIRE)
+    youtube_refresh_token = db.Column(db.Text, nullable=True)
 
     @validates('mot_de_passe')
     def validatePassword(self, key, value):

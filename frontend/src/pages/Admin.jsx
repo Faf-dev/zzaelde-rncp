@@ -74,6 +74,14 @@ export default function Admin() {
     }
   }
 
+  function connecterCompteYoutube() {
+    // Redirection vers le backend pour démarrer le flux OAuth.
+    // Avec les HttpOnly Cookies, le navigateur attache tout seul le cookie JWT lors de la requete.
+    // Plus de query string !
+    const urlApi = process.env.REACT_APP_API_URL ?? "";
+    window.location.href = `${urlApi}/api/youtube/auth`;
+  }
+
   return (
     <div className="admin-page">
 
@@ -109,13 +117,21 @@ export default function Admin() {
             <p className="admin-youtube-info">
               Clique pour synchroniser playlist et video
             </p>
-            <button
-              className="admin-btn admin-btn--primary"
-              onClick={synchroniserYoutube}
-              disabled={synchronisation}
-            >
-              {synchronisation ? <><Spinner /> synchro...</> : "synchroniser depuis ytb"}
-            </button>
+            <div style={{ display: "flex", gap: "10px" }}>
+              <button
+                className="admin-btn admin-btn--ghost"
+                onClick={connecterCompteYoutube}
+              >
+                Associer mon compte YouTube
+              </button>
+              <button
+                className="admin-btn admin-btn--primary"
+                onClick={synchroniserYoutube}
+                disabled={synchronisation}
+              >
+                {synchronisation ? <><Spinner /> synchro...</> : "synchroniser depuis ytb"}
+              </button>
+            </div>
           </div>
         </section>
 

@@ -91,8 +91,6 @@ export default function Slider() {
                     <div className="slider-item" key={playlist.id}>
                         <img src={getImageUrl(playlist.miniature)} alt={playlist.title} loading="lazy"/>
                         <div className="slider-content">
-                            <div className="slider-author">Zzaelde</div>
-                            <div className="slider-title">Montage</div>
                             <div className="slider-topic">{playlist.title}</div>
                             <div className="slider-description">
                                 {playlist.description}
@@ -102,9 +100,8 @@ export default function Slider() {
                                     className="Detail-button"
                                     onClick={() => navigate(`/detail/${playlist.id}`)}
                                 >
-                                    DETAIL
+                                    Détail
                                 </button>
-                                <button className="Contact-button" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>CONTACT</button>
                             </div>
                         </div>
                     </div>

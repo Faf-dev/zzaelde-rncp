@@ -9,22 +9,29 @@ export function AuthProvider({ children }) {
 
   // Vérifie le token JWT au montage
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    if (token) {
-      // On considère l'utilisateur connecté s'il a un token
-      setUser({ username: "admin" });
+    const sessionActive = localStorage.getItem("is_logged_in");
+    if (sessionActive === "true") {
+      setUser({ username: "Zzaelde" });
     }
     setLoading(false);
   }, []);
 
   const login = useCallback(async (username, password) => {
     const data = await authApi.connexion(username, password);
-    localStorage.setItem("access_token", data.access_token);
+    // On ne stocke plus le token (il est dans le cookie)
+    // On stocke juste un petit drapeau pour que le front sache qu'on est connecté au f5
+    localStorage.setItem("is_logged_in", "true");
     setUser(data.user);
   }, []);
 
-  const logout = useCallback(() => {
-    localStorage.removeItem("access_token");
+  const logout = useCallback(async () => {
+    try {
+      // On demande au serveur de supprimer le cookie
+      await authApi.deconnexion();
+    } catch(e) {
+      console.error(e);
+    }
+    localStorage.removeItem("is_logged_in");
     setUser(null);
   }, []);
 

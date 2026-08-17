@@ -94,7 +94,7 @@ main {
     width: 18rem;
     height: 2.5rem;
     border-radius: 50px;
-    background: linear-gradient(to right, #656565, #ffcb6b, #ffb938, #ffa500, #757575, #656565);
+    background: linear-gradient(to right, #656565, #ffcb6b, #ffb938, #e7dbc1, #757575, #656565);
     background-size: 200%;
     animation: animationGradient 2.5s linear infinite;
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
@@ -122,7 +122,7 @@ main {
 }
 
 .tag-box .tag:hover {
-    color: #ffa500;
+    color: #e7dbc1;
     cursor: default;
 }
 
@@ -166,7 +166,7 @@ main {
 
 .btn-contact-main {
     text-decoration: none;
-    background-color: rgb(255, 165, 0, 0.8) !important;
+    background-color: rgba(231, 219, 193) !important;
     color: black;
     padding: 0.7rem 2.5rem;
     border-radius: 50px;
@@ -177,7 +177,7 @@ main {
 }
 
 .btn-contact-main:hover {
-    background-color: #c27e00 !important;
+    background-color: rgba(230, 141, 69) !important;
 }
 
 /* 3D MODEL */

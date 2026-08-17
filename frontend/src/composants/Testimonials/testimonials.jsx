@@ -1,36 +1,53 @@
 import "./testimonials.css"
 import "aos/dist/aos.css";
 
+const reviews = [
+    {
+        image: "/image/testimonials/ombredinazuma.jpeg",
+        name: "L'Ombre d'Inazuma",
+        text: "\"Merci pour la qualités des vidéos que tu produis, je continuerai de bosser avec toi!\"",
+        link: "https://www.tiktok.com/@lombredinazuma",
+        linktype: "TikTok",
+    },
+    {
+        image: "/image/testimonials/block13officielle.jpeg",
+        name: "Block 13 RP Officiel",
+        text: "\"Un travail de pro, tout simplement.\"",
+        link: "https://www.tiktok.com/@block13officielle",
+        linktype: "TikTok",
+    },
+    {
+        image: "/image/testimonials/tempestefa.jpeg",
+        name: "Tempeste FA",
+        text: "\"C'était un plaisir de travailler avec Zzaelde, il est sympathique et fait du travail de qualité!\"",
+        link: "https://www.tiktok.com/@tempeste_fa",
+        linktype: "YouTube",
+    },
+];
+
 export default function Testimonials () {
+    // Répété plusieurs fois pour garantir une piste assez large et éviter tout "blanc" pendant la boucle
+    const loopedReviews = [...reviews, ...reviews, ...reviews, ...reviews];
+
     return (
         <div className="review-page" id="review-page">
-            <h1 className="titre-review" id="titre-testimonials"> ILS M'ONT FAIT CONFIANCE</h1>
-            <div className="review-box-container" id="review-box-container">
-                <div data-aos="fade-up-right" className="review-container">
-                    <img src="/image/testimonials/ombredinazuma.jpeg" alt="" loading="lazy"/>
-                    <h3>L'Ombre d'Inazuma</h3>
-                    <p>"Merci pour la qualités des vidéos que tu produis, je continuerai de bosser avec toi!"</p>
-                    <a href="https://www.tiktok.com/@lombredinazuma">
-                        <button className="social-link">TikTok</button>
-                    </a>
-                </div>
-
-                <div data-aos="fade-up" className="review-container">
-                    <img src="/image/testimonials/block13officielle.jpeg" alt="" loading="lazy"/>
-                    <h3>Block 13 RP Officiel</h3>
-                    <p>"Un travail de pro, tout simplement."</p>
-                    <a href="https://www.tiktok.com/@block13officielle">
-                        <button className="social-link">TikTok</button>
-                    </a>
-                </div>
-
-                <div data-aos="fade-up-left" className="review-container">
-                    <img src="/image/testimonials/tempestefa.jpeg" alt="" loading="lazy"/>
-                    <h3>Tempeste FA</h3>
-                    <p>"C'était un plaisir de travailler avec Zzaelde, il est sympathique et fait du travail de qualité!"</p>
-                    <a href="https://www.tiktok.com/@tempeste_fa">
-                        <button className="social-link">TikTok</button>
-                    </a>
+            <h1 className="titre-review" id="titre-testimonials"> UN MONTEUR AU SERVICE DE VOS BESOINS</h1>
+            <div className="review-marquee" id="review-box-container">
+                <div className="review-track">
+                    {loopedReviews.map((review, index) => (
+                        <div className="review-container" key={`${review.name}-${index}`}>
+                            <div className="review-main">
+                                <img src={review.image} alt="" loading="lazy"/>
+                                <h3>{review.name}</h3>
+                            </div>
+                            <div className="review-comment">
+                                <p>{review.text}</p>
+                            </div>
+                            <a className="review-link" href={review.link}>
+                                <button className="social-link">{review.linktype}</button>
+                            </a>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>

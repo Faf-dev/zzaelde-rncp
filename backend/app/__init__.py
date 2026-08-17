@@ -4,6 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_jwt_extended import JWTManager
+from flask_jwt_extended.exceptions import JWTExtendedException
+from jwt.exceptions import PyJWTError
 from flask_cors import CORS
 from app.config import Config
 from flask_restx import Api
@@ -18,13 +20,20 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    CORS(app, origins=["http://localhost:3000"])
+    # support_credentials=True est obligatoire pour laisser passer les cookies HttpOnly 
+    CORS(app, origins=["http://localhost:3000"], supports_credentials=True)
 
     db.init_app(app)
     jwt.init_app(app)
     restx.init_app(app)
     limiter.init_app(app)
     register_cli(app)
+
+    # flask-restx intercepte les exceptions avant flask-jwt-extended, sans ca un token absent/expire renvoie 500 au lieu de 401
+    @restx.errorhandler(JWTExtendedException)
+    @restx.errorhandler(PyJWTError)
+    def jwt_error(erreur):
+        return {"erreur": "authentification requise ou invalide"}, 401
 
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 

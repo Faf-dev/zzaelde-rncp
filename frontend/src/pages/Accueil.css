@@ -49,6 +49,27 @@
   background-color: white;
 }
 
+/* Section 3 : "A propos" + "Ils m'ont fait confiance" partagent le même écran */
+.a-propos-section {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.a-propos-section .a-propos {
+  flex: 1;
+  display: flex;
+}
+
+.a-propos-section .a-propos main {
+  min-height: auto;
+  flex: 1;
+}
+
+.a-propos-section #temoignages {
+  flex-shrink: 0;
+}
+
 .accueil-header  svg {
     fill: rgba(255, 255, 255, 0.8) !important;
     color: white !important;
@@ -81,5 +102,13 @@
   
   .content p {
     font-size: 1rem;
+  }
+
+  .a-propos-section {
+    min-height: auto;
+  }
+
+  .a-propos-section .a-propos main {
+    min-height: 100vh;
   }
 }

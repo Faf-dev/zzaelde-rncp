@@ -194,10 +194,32 @@ header.header-theme-light .mobile-nav .bi {
 }
 
 /* barre de navigation pour pc */
-header h1 {
+.logo-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     margin: 0;
-    font-size: 3rem;
+}
+
+.logo {
+    height: 3rem;
+    width: auto;
+    display: block;
+}
+
+.logo-separator {
+    font-size: 2rem;
+    font-weight: 300;
+    opacity: 0.5;
+}
+
+.typing-text {
+    display: inline-block;
+    min-width: 15ch; /* fige la largeur sur "Motion designer" pour éviter le décalage de la nav */
+    font-size: 1.2rem;
     font-weight: 500;
+    letter-spacing: 0.05rem;
+    white-space: nowrap;
 }
 
 .native-nav {
@@ -327,7 +349,11 @@ header h1 {
     }
 
     .logo {
-        font-size: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .typing-text {
+        font-size: 1rem;
     }
 
     .native-nav {
@@ -356,7 +382,11 @@ header h1 {
     }
 
     .logo {
-        font-size: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .typing-text {
+        font-size: 1rem;
     }
 
     .native-nav {
@@ -392,7 +422,15 @@ header h1 {
     }
 
     .logo {
-        font-size: 1.3rem;
+        height: 1.6rem;
+    }
+
+    .logo-separator {
+        font-size: 1.2rem;
+    }
+
+    .typing-text {
+        font-size: 0.75rem;
     }
 
     .page-with-header {

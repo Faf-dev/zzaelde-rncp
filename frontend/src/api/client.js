@@ -5,19 +5,19 @@ const URL_API = process.env.REACT_APP_API_URL ?? "";
  * Elle ajoute automatiquement le token de connexion si l'utilisateur est connecté.
  */
 async function request(chemin, options = {}) {
-  const token = localStorage.getItem("access_token");
-
   const entetes = {
     // On précise que le corps est en JSON, sauf pour les uploads de fichiers (FormData)
     ...(options.body && !(options.body instanceof FormData)
       ? { "Content-Type": "application/json" }
       : {}),
-    // On ajoute le token JWT si l'utilisateur est connecté
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
     ...options.headers,
   };
 
-  const reponse = await fetch(`${URL_API}${chemin}`, { ...options, headers: entetes });
+  const reponse = await fetch(`${URL_API}${chemin}`, { 
+    ...options, 
+    headers: entetes,
+    credentials: "include" // IMPORTANT: C'est ça qui force l'envoi des cookies HttpOnly !
+  });
 
   if (!reponse.ok) {
     let message = `Erreur ${reponse.status}`;
@@ -39,6 +39,10 @@ export const authApi = {
     request("/api/auth/login", {
       method: "POST",
       body: JSON.stringify({ username: nom, password: motDePasse }),
+    }),
+  deconnexion: () => 
+    request("/api/auth/logout", {
+      method: "POST"
     }),
   changerMotDePasse: (ancienMotDePasse, nouveauMotDePasse) =>
     request("/api/auth/password", {

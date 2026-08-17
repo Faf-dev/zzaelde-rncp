@@ -18,9 +18,18 @@ class Config:
 
     JWT_SECRET_KEY = os.environ["JWT_SECRET_KEY"]
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=8)
-
+    
+    # On passe en HttpOnly Cookies
+    JWT_TOKEN_LOCATION = ["cookies"]
+    JWT_COOKIE_SECURE = False  # False car localhost, passer a True en prod 
+    JWT_COOKIE_CSRF_PROTECT = False # Simplifie l'implementation pour l'instant
+    
     YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY", "")
     YOUTUBE_CHANNEL_ID = os.environ.get("YOUTUBE_CHANNEL_ID", "")
+
+    GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "")
+    GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", "")
+    GOOGLE_REDIRECT_URI = os.environ.get("GOOGLE_REDIRECT_URI", "")
 
     ZZAELDE_ID = os.environ.get("ZZAELDE_ID")
     ZZAELDE_USERNAME = os.environ.get("ZZAELDE_USERNAME")
