@@ -59,55 +59,43 @@ export default function Home() {
                 VOUS CHERCHEZ UN MONTEUR VIDÉO ADAPTÉ À VOS BESOINS ? <br />
                 NE CHERCHEZ PLUS, VOUS AVEZ TROUVÉ !
               </h1>
-              <p
-                data-aos="fade-zoom-in"
-                data-aos-easing="ease-in-back"
-                data-aos-delay="0"
-                data-aos-offset="0"
-                data-aos-duration="1200"
-                className="description"
-              >
-                <br /> Je me présente, je suis Elliot, monteur vidéo et motion designer depuis bientôt 10 ans maintenant. J'ai commencé en autodidacte durant mon lycée et j'ai poursuivi mes études dans ce domaine (BTS et Licence). 
-                <br /> <br /> Durant toutes ces années, j'ai pu apprendre et me former au maximum pour pouvoir vous proposer aujourd'hui le meilleur de ce qui peut se faire en montage vidéo. J'ai pu découvrir et pratiquer sur énormément de contenus différents, je peux donc m'adapter à n'importe quel projet et notamment le vôtre !
-                <br /> <br /> Vous me contactez, vous m'exposez votre projet et nous réfléchissons ensemble pour produire les meilleures vidéos possibles tout en conservant votre propre vision. Je suis avec vous à chaque étape du processus : je peux vous aider sur le script, je vous propose des voix off si vous n'avez pas de quoi vous filmer, je m'occupe de trouver des images et vidéos pour illustrer vos propos, je vous tiens au courant de l'avancée des montages au fur et à mesure et je tiens compte de vos retours.
-                <br /> <br /> Vous êtes convaincus, vous avez besoin d'en savoir plus ou vous vous posez encore des questions ? Je suis à votre disposition pour vous répondre "Bouton contact"
-                <br />
-                Vous pouvez les retrouvez dans mon portfolio ci-dessous
-                <br />
-              </p>
               <div
                 data-aos="fade-zoom-in"
                 data-aos-easing="ease-in-back"
                 data-aos-delay="0"
                 data-aos-offset="0"
-                data-aos-duration="1500"
-                className="buttons"
+                data-aos-duration="1200"
+                className="about-row about-row-1"
               >
-                <button
-                  className="btn-get-started"
-                  onClick={() => scrollToSection("portfolio")}
-                >
-                  Portfolio
-                </button>
-                <button
-                  className="btn-contact-main"
-                  onClick={() => scrollToSection("contact")}
-                >
-                  Contact
-                </button>
+                <p className="description description-left">
+                  <br /> Je me présente, je suis Elliot, monteur vidéo et motion designer depuis bientôt 10 ans maintenant. J'ai commencé en autodidacte durant mon lycée et j'ai poursuivi mes études dans ce domaine (BTS et Licence).
+                  <br /> <br /> Durant toutes ces années, j'ai pu apprendre et me former au maximum pour pouvoir vous proposer aujourd'hui le meilleur de ce qui peut se faire en montage vidéo. J'ai pu découvrir et pratiquer sur énormément de contenus différents, je peux donc m'adapter à n'importe quel projet et notamment le vôtre !
+                </p>
+                <div className="about-placeholder about-placeholder-right">Placeholder</div>
+              </div>
+              <div
+                data-aos="fade-zoom-in"
+                data-aos-easing="ease-in-back"
+                data-aos-delay="0"
+                data-aos-offset="0"
+                data-aos-duration="1200"
+                className="about-row about-row-2"
+              >
+                <div className="about-placeholder about-placeholder-left">Placeholder</div>
+                <p className="description description-right">
+                  <br /> <br /> Vous me contactez, vous m'exposez votre projet et nous réfléchissons ensemble pour produire les meilleures vidéos possibles tout en conservant votre propre vision. Je suis avec vous à chaque étape du processus : je peux vous aider sur le script, je vous propose des voix off si vous n'avez pas de quoi vous filmer, je m'occupe de trouver des images et vidéos pour illustrer vos propos, je vous tiens au courant de l'avancée des montages au fur et à mesure et je tiens compte de vos retours.
+                  <br /> <br /> Vous êtes convaincus, vous avez besoin d'en savoir plus ou vous vous posez encore des questions ? Je suis à votre disposition pour vous répondre
+                  <button
+                    className="btn-contact-main"
+                    onClick={() => scrollToSection("contact")}
+                  >
+                    Contact
+                  </button>
+                  <br />
+                </p>
               </div>
             </div>
           </main>
-          <spline-viewer
-            data-aos="fade-zoom-in"
-            data-aos-easing="ease-in-back"
-            data-aos-delay="0"
-            data-aos-offset="0"
-            data-aos-duration="1600"
-            class="zzaelde-3d"
-            url="https://prod.spline.design/r37z6u045CdceJES/scene.splinecode"
-            loading="lazy"
-          ></spline-viewer>
         </div>
 
         {/* Section 4: Ils m'ont fait confiance */}

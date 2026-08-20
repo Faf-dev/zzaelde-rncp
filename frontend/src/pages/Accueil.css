@@ -104,6 +104,78 @@
   background-color: lightgray;
 }
 
+/* Desktop 1080p et + : la description et les témoignages tiennent sur un seul écran */
+@media (min-width: 1024px) {
+  .a-propos-section {
+    min-height: calc(100vh - 6rem);
+    justify-content: space-between;
+  }
+
+  /* Le "main" garanti par Apropos.css force min-height:100vh + centrage vertical :
+     on l'annule ici pour que le titre ne soit plus coupé. */
+  .a-propos-section .a-propos {
+    min-height: 0;
+    flex: 1 1 auto;
+  }
+
+  .a-propos-section .a-propos main {
+    min-height: 0;
+    justify-content: flex-start;
+    padding-top: 2rem;
+  }
+
+  .a-propos-section .content h1 {
+    font-size: 2.6rem;
+    margin: 0.75rem 0;
+  }
+
+  .a-propos-section .about-row {
+    gap: 1.5rem;
+  }
+
+  .a-propos-section .about-row .description {
+    font-size: 1rem;
+    margin: 0.25rem 0;
+  }
+
+  .a-propos-section .about-placeholder {
+    min-height: 8rem;
+  }
+
+  .a-propos-section #temoignages {
+    flex: 0 0 auto;
+  }
+
+  .a-propos-section #temoignages .review-page h1 {
+    padding: 1rem;
+  }
+
+  .a-propos-section #temoignages .review-marquee {
+    padding: 1.5rem 0;
+  }
+
+  .a-propos-section #temoignages .review-track {
+    height: 16rem;
+  }
+
+  .a-propos-section #temoignages .review-container {
+    width: 20rem;
+    margin-top: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  .a-propos-section #temoignages .review-main {
+    height: 10rem;
+    padding: 1rem;
+  }
+
+  .a-propos-section #temoignages .review-container img {
+    height: 8rem;
+    width: 8rem;
+    margin-top: -5rem;
+  }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .content h1 {
