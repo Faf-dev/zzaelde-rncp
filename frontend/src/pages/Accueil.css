@@ -43,10 +43,77 @@
   margin: 0;
 }
 
-/* Le header est fixe : laisser une marge lorsque la navigation atteint une cible. */
-#accueil,
+/* Le header est fixe : chaque section a sa propre marge de scroll, réglable indépendamment. */
+#accueil {
+  scroll-margin-top: 6rem;
+}
+
+#portfolio {
+  scroll-margin-top: 0rem;
+}
+
+#a-propos {
+  scroll-margin-top: 4rem;
+}
+
 #contact {
   scroll-margin-top: 6rem;
+}
+/* Ecran 1080 */
+@media (max-width: 1920px) and (max-height: 1080px) {
+  #accueil {
+    scroll-margin-top: 6rem;
+  }
+
+  #portfolio {
+    scroll-margin-top: 0rem;
+  }
+
+  #a-propos {
+    scroll-margin-top: -1rem;
+  }
+
+  #contact {
+    scroll-margin-top: 5rem;
+  }
+}
+
+/* Tablette */
+@media (max-width: 1300px) {
+  #accueil {
+    scroll-margin-top: 6rem;
+  }
+
+  #portfolio {
+    scroll-margin-top: 0rem;
+  }
+
+  #a-propos {
+    scroll-margin-top: 6rem;
+  }
+
+  #contact {
+    scroll-margin-top: 6rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  #accueil {
+    scroll-margin-top: 6rem;
+  }
+
+  #portfolio {
+    scroll-margin-top: 0rem;
+  }
+
+  #a-propos {
+    scroll-margin-top: -1rem;
+  }
+
+  #contact {
+    scroll-margin-top: 6rem;
+  }
 }
 
 /* La hauteur de Contact suit le formulaire pour éviter un grand vide avant le footer. */
@@ -126,7 +193,7 @@
 
   .a-propos-section .content h1 {
     font-size: 2.6rem;
-    margin: 0.75rem 0;
+    margin: 0;
   }
 
   .a-propos-section .about-row {
@@ -135,7 +202,7 @@
 
   .a-propos-section .about-row .description {
     font-size: 1rem;
-    margin: 0.25rem 0;
+    margin: 0rem 0;
   }
 
   .a-propos-section .about-placeholder {
@@ -151,7 +218,7 @@
   }
 
   .a-propos-section #temoignages .review-marquee {
-    padding: 1.5rem 0;
+    padding: 0rem 0;
   }
 
   .a-propos-section #temoignages .review-track {
@@ -159,7 +226,7 @@
   }
 
   .a-propos-section #temoignages .review-container {
-    width: 20rem;
+    width: 10rem;
     margin-top: 4rem;
     margin-bottom: 1rem;
   }
@@ -172,7 +239,7 @@
   .a-propos-section #temoignages .review-container img {
     height: 8rem;
     width: 8rem;
-    margin-top: -5rem;
+    margin-top: -2rem;
   }
 }
 

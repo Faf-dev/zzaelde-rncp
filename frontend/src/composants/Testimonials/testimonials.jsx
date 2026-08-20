@@ -27,11 +27,7 @@ export default function Testimonials () {
     }, []);
 
     if (reviews.length === 0) {
-        return (
-            <div className="review-page" id="review-page">
-                <h1 className="titre-review" id="titre-testimonials"> UN MONTEUR AU SERVICE DE VOS BESOINS</h1>
-            </div>
-        );
+        return <div className="review-page" id="review-page"></div>;
     }
 
     // Répété plusieurs fois pour garantir une piste assez large et éviter tout "blanc" pendant la boucle
@@ -39,20 +35,19 @@ export default function Testimonials () {
 
     return (
         <div className="review-page" id="review-page">
-            <h1 className="titre-review" id="titre-testimonials"> UN MONTEUR AU SERVICE DE VOS BESOINS</h1>
             <div className="review-marquee" id="review-box-container">
                 <div className="review-track">
                     {loopedReviews.map((review, index) => (
                         <div className="review-container" key={`${review.id}-${index}`}>
-                            <div className="review-main">
-                                <img src={getImageUrl(review.image)} alt="" loading="lazy"/>
-                                <h3>{review.name}</h3>
+                            <div className="review-photo">
+                                <img src={getImageUrl(review.image)} alt={review.name} loading="lazy"/>
                             </div>
-                            <div className="review-comment">
+                            <div className="review-info">
+                                <h3>{review.name}</h3>
                                 <p>{review.text}</p>
                             </div>
-                            <a className="review-link" href={review.link}>
-                                <button className="social-link">{LABELS_LIEN[review.link_type] || review.link_type}</button>
+                            <a className="review-link" href={review.link} target="_blank" rel="noopener noreferrer">
+                                {LABELS_LIEN[review.link_type] || review.link_type}
                             </a>
                         </div>
                     ))}

@@ -139,6 +139,7 @@ main {
     display: flex;
     align-items: center;
     gap: 2rem;
+    line-height: 1.7;
     width: 100%;
 }
 
@@ -163,7 +164,7 @@ main {
 
 .about-row-2 .description-right {
     padding: 0rem 5rem 0rem 1rem;
-    text-align: right;
+    text-align: left;
 }
 
 .about-placeholder {
@@ -205,6 +206,8 @@ main {
     background-color: rgba(231, 219, 193) !important;
     color: black;
     padding: 0.7rem 2.5rem;
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
     border-radius: 50px;
     font-size: 1.2rem;
     font-weight: 600;
@@ -225,6 +228,9 @@ main {
         font-size: 0.7rem;
     }
 
+    .about-row {
+        line-height: 1.3;
+    }
     .content {
         margin-top: 5% !important; /* Réduire le margin-top pour 1080p */
         width: 100%;
@@ -265,10 +271,6 @@ main {
 /* RESPONSE POUR TABLETTE */
 @media (max-width: 1300px) {
 
-    .content {
-        margin-top: 75%;
-    }
-
     .about-row {
         flex-direction: column;
         align-items: stretch;
@@ -280,7 +282,7 @@ main {
 
     .about-row .description {
         max-width: 100%;
-        text-align: left !important;
+        text-align: center !important;
     }
 }
 
@@ -293,8 +295,6 @@ main {
 
     .content {
         scale: 0.8;
-        padding-top: 25rem;
-        margin-top: 25rem;
         max-width: 40rem;
         margin-bottom: 5rem;
     }

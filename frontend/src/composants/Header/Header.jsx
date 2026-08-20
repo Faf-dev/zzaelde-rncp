@@ -15,11 +15,15 @@ export default function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const mobileIconRef = useRef(null);
 
-    // Scroll vers une section par ID
+    // Scroll vers une section par ID en tenant compte de son "scroll-margin-top" CSS.
+    // Le point d'arrêt de chaque lien se règle donc entièrement dans le CSS (par #id et par media query),
+    // pas ici : voir #accueil / #portfolio / #a-propos / #contact dans Accueil.css.
     const scrollToSection = (sectionId) => {
         const element = document.getElementById(sectionId);
         if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const offset = parseFloat(getComputedStyle(element).scrollMarginTop) || 0;
+            const top = element.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({ top, behavior: 'smooth' });
         }
     }
 

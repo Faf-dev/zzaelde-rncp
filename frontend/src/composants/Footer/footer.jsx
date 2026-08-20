@@ -10,7 +10,7 @@ export default function Footer() {
             <div className="col-1-2">
                 <img src={zzaeldeLogo} className="logo-footer" alt="Zzaelde logo" width="40" height="40" loading="lazy"/>
                 <address className="footer-address">
-                    "Ce qui ne nous tue pas, nous rend plus fort."<br></br>
+                    "Un monteur au service de vos besoins"<br></br>
                     elliotd.editing@gmail.com
                 </address>
             </div>
@@ -52,7 +52,7 @@ export default function Footer() {
                 <hr></hr>
                 <div className="row">
                     <div className="col-1-2">
-                        <p className="footer-copyright">© 2025 Zzaelde, Tous droits réservés - développé par Julien Noailles</p>
+                        <p className="footer-copyright">© 2026 Zzaelde, Tous droits réservés - développé par Julien Noailles</p>
                     </div>
                 <div className="col-1-2">
                     <ul className="footer-nav nav">

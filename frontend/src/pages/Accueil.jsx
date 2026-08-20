@@ -84,7 +84,8 @@ export default function Home() {
                 <div className="about-placeholder about-placeholder-left">Placeholder</div>
                 <p className="description description-right">
                   <br /> <br /> Vous me contactez, vous m'exposez votre projet et nous réfléchissons ensemble pour produire les meilleures vidéos possibles tout en conservant votre propre vision. Je suis avec vous à chaque étape du processus : je peux vous aider sur le script, je vous propose des voix off si vous n'avez pas de quoi vous filmer, je m'occupe de trouver des images et vidéos pour illustrer vos propos, je vous tiens au courant de l'avancée des montages au fur et à mesure et je tiens compte de vos retours.
-                  <br /> <br /> Vous êtes convaincus, vous avez besoin d'en savoir plus ou vous vous posez encore des questions ? Je suis à votre disposition pour vous répondre
+                  <br /> <br /> Vous êtes convaincus, vous avez besoin d'en savoir plus ou vous vous posez encore des questions ? 
+                  <br /> Je suis à votre disposition pour vous répondre :
                   <button
                     className="btn-contact-main"
                     onClick={() => scrollToSection("contact")}

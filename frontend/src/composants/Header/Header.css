@@ -8,7 +8,7 @@ header {
     min-width: 100%;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 10rem;
+    padding: 0.5rem 10rem;
     z-index: 9999; /* Z-index très élevé pour être au-dessus de tout */
     backdrop-filter: blur(20px); /* Effet de flou derrière */
     -webkit-backdrop-filter: blur(20px); /* Support Safari */

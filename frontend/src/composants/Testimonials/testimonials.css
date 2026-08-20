@@ -1,14 +1,7 @@
-.review-page h1 {
-    text-align: center;
-    padding: 2rem;
-    background: linear-gradient(to top, #eee6d2 0%, #e6dbbf 100%);
-    color: rgb(0, 10, 19);
-    margin: 0;
-    box-shadow: inset 0 -0.75rem 1.5rem rgba(0, 10, 19, 0.08);
-}
-
 .review-page {
     overflow: hidden;
+    background: linear-gradient(to top, #eee6d2 0%, #e6dbbf 100%);
+    box-shadow: inset 0 -0.75rem 1.5rem rgba(0, 10, 19, 0.08);
 }
 
 .review-page .review-marquee {
@@ -21,9 +14,9 @@
 
 .review-page .review-track {
     display: flex;
+    align-items: center;
     width: max-content;
-    height: 25rem;
-    gap: 4rem;
+    gap: 3rem;
     animation: review-scroll 60s linear infinite;
 }
 
@@ -42,145 +35,110 @@
 
 .review-page .review-track .review-container {
     flex: 0 0 auto;
-    width: 30rem;
-    text-align: center;
+    width: 10rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0rem;
+}
+
+.review-page .review-track .review-photo {
     position: relative;
-    border: 1px solid black;
-    box-shadow: 1 1 1;
-    border-radius: 0.5rem;
-    margin-top: 6rem;
-    margin-bottom: 2rem;
+    height: 7rem;
+    width: 7.5rem;
 }
 
-.review-page .review-track .review-main {
-    padding: 2rem;
-    padding-bottom: 0.5rem;
-    height: 15rem;
-    position: relative;
-}
-
-.review-page .review-track .review-container img {
-    border-radius: 50%;
-    z-index : 2;
-    height: 12rem;
-    width: 12rem;
-    margin-top: -8rem;
-    object-fit: cover;
-    border: 1px solid black;
-    position: relative;
-}
-
-.review-page .review-track .review-container h3 {
-    font-size: 2.2rem;
-    color: black;
-    padding: 0;
-    margin: 1rem;
-}
-
-.review-page .review-track .review-comment {
+.review-page .review-track .review-photo img {
     position: absolute;
     inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    background: rgba(255, 255, 255, 0.97);
-    border-radius: 0.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid black;
+    transition: transform 0.35s ease;
+}
+
+.review-page .review-track .review-container:hover .review-photo img {
+    transform: translateY(-0.1rem);
+}
+
+.review-page .review-track .review-info {
+    max-height: 0;
     opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
+    overflow: hidden;
+    text-align: center;
+    transition: max-height 0.35s ease, opacity 0.3s ease;
 }
 
-.review-page .review-track .review-container:hover .review-comment {
+.review-page .review-track .review-container:hover .review-info {
+    max-height: 6rem;
     opacity: 1;
-    pointer-events: auto;
 }
 
-.review-page .review-track .review-comment p {
-    font-size: 1.3rem;
-    color: black;
-    font-style: italic;
+.review-page .review-track .review-info h3 {
+    font-size: 0.95rem;
     margin: 0;
+    color: #2a2a2a;
+}
+
+.review-page .review-track .review-info p {
+    font-size: 0.8rem;
+    margin: 0.15rem 0 0;
+    color: #555555;
+    font-style: italic;
 }
 
 .review-page .review-track .review-link {
-    position: relative;
-    z-index: 2; /* reste au-dessus du commentaire même quand celui-ci s'affiche */
-    display: block;
     text-decoration: none;
-    padding: 0 2rem 2rem;
-}
-
-.review-page .review-track button {
-    position: absolute;
-    pointer-events: all;
-    cursor: pointer;
-    font-size: 1.5rem;
-    padding: 1rem 2rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: black;
+    padding: 0.4rem 1.2rem;
     border-radius: 3rem;
-    color: rgb(0, 0, 0);
     background-color: white;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%) translateY(50%);
-    transition: background-color 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.review-page .review-track button:hover {
+.review-page .review-track .review-link:hover {
     background-color: black;
     color: white;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-    .review-page h1 {
-        font-size: 1.3rem;
-        padding: 1.2rem;
-    }
-
     .review-page .review-marquee {
         padding: 3rem 0;
     }
 
     .review-page .review-track {
-        gap: 1.5rem;
+        gap: 2rem;
         animation-duration: 18s;
     }
 
     .review-page .review-track .review-container {
-        width: 20rem;
-        margin-top: 4rem;
+        width: 7rem;
     }
 
-    .review-page .review-track .review-main {
-        padding: 1.2rem;
+    .review-page .review-track .review-photo {
+        height: 5rem;
+        width: 5rem;
     }
 
-    .review-page .review-track .review-container img {
-        height: 8rem;
-        width: 8rem;
-        margin-top: -6rem;
+    .review-page .review-track .review-container:hover .review-photo img {
+        transform: translateY(-1.1rem);
     }
 
-    .review-page .review-track .review-container h3 {
-        font-size: 1.5rem;
+    .review-page .review-track .review-info h3 {
+        font-size: 0.8rem;
     }
 
-    .review-page .review-track .review-comment p {
-        font-size: 1rem;
-    }
-
-    .review-page .review-track button {
-        font-size: 1rem;
-        padding: 0.7rem 1.5rem;
+    .review-page .review-track .review-info p {
+        font-size: 0.7rem;
     }
 
     .review-page .review-track .review-link {
-        position: relative;
-        z-index: 2; /* reste au-dessus du commentaire même quand celui-ci s'affiche */
-        display: block;
-        text-decoration: none;
-        padding: 0 2rem 2rem;
+        font-size: 0.85rem;
+        padding: 0.35rem 1rem;
     }
 }
 
