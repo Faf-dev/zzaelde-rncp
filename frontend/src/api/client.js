@@ -60,6 +60,11 @@ export const publicApi = {
   toutesLesPlaylists: () => request("/api/playlists"),
   unePlaylist: (id) => request(`/api/playlists/${id}`),
   tousLesTestimonials: () => request("/api/testimonials"),
+  envoyerContact: (donnees) =>
+    request("/api/contact", {
+      method: "POST",
+      body: JSON.stringify(donnees),
+    }),
 };
 
 // -- Administration : Playlists -----------------------------------------------

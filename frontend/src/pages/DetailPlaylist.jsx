@@ -46,7 +46,6 @@ export default function DetailPlaylist() {
                         Retour
                     </button>
                     <div className="detail-hero-content">
-                        <p className="detail-hero-label">Playlist</p>
                         <h1 className="detail-hero-title">{playlist.title}</h1>
                         <p className="detail-hero-description">{playlist.description}</p>
                         <span className="detail-hero-count">

@@ -1,11 +1,20 @@
 import os
-from flask import send_file, current_app
-from flask_restx import Namespace, Resource
+import requests
+from flask import send_file, current_app, request
+from flask_restx import Namespace, Resource, fields
+from app import limiter
 from app.models.playlist import Playlist
 from app.models.review import Review
 from app.utils.check_role import get_zzaelde_user
 
 public_ns = Namespace("public", path="/api", description="Routes publiques")
+
+contact_model = public_ns.model("Contact", {
+    "nom": fields.String(required=True),
+    "email": fields.String(required=True),
+    "sujet": fields.String(required=True),
+    "message": fields.String(required=True),
+})
 
 
 @public_ns.route("/playlists")
@@ -70,3 +79,48 @@ class ImageTestimonialPublic(Resource):
                 return send_file(chemin)
 
         return {"erreur": "image introuvable"}, 404
+
+
+@public_ns.route("/contact")
+class Contact(Resource):
+    @limiter.limit("5 per minute")
+    @public_ns.expect(contact_model)
+    def post(self):
+        """envoie le message du formulaire de contact dans le salon discord du client via webhook"""
+        donnees = request.get_json(silent=True) or {}
+
+        nom = str(donnees.get("nom", "")).strip()
+        email = str(donnees.get("email", "")).strip()
+        sujet = str(donnees.get("sujet", "")).strip()
+        message = str(donnees.get("message", "")).strip()
+
+        if not nom or not email or not sujet or not message:
+            return {"erreur": "tous les champs sont requis"}, 400
+        if "@" not in email or "." not in email.split("@")[-1]:
+            return {"erreur": "email invalide"}, 400
+
+        # bornes de longueur pour rester dans la limite de 2000 caracteres d'un message discord et eviter le spam
+        nom, sujet = nom[:200], sujet[:200]
+        email, message = email[:320], message[:1500]
+
+        webhook_url = current_app.config["DISCORD_CONTACT_WEBHOOK_URL"]
+        if not webhook_url:
+            current_app.logger.error("DISCORD_CONTACT_WEBHOOK_URL manquant")
+            return {"erreur": "configuration serveur manquante"}, 500
+
+        contenu = (
+            f"**Nouveau message de contact**\n"
+            f"Nom : {nom}\n"
+            f"Email : {email}\n"
+            f"Sujet : {sujet}\n"
+            f"Message : {message}"
+        )
+
+        try:
+            envoi = requests.post(webhook_url, json={"content": contenu}, timeout=10)
+            envoi.raise_for_status()
+        except requests.RequestException:
+            current_app.logger.exception("echec de l'envoi du message de contact via webhook discord")
+            return {"erreur": "echec de l'envoi du message"}, 502
+
+        return {"succes": True}, 200

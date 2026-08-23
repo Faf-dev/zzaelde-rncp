@@ -35,3 +35,6 @@ class Config:
     ZZAELDE_USERNAME = os.environ.get("ZZAELDE_USERNAME")
     ZZAELDE_PASSWORD = os.environ.get("ZZAELDE_PASSWORD")
     ZZAELDE_ROLE = os.environ.get("ZZAELDE_ROLE")
+
+    # Webhook Discord (cree par le client sur son propre salon) pour recevoir les messages du formulaire de contact
+    DISCORD_CONTACT_WEBHOOK_URL = os.environ.get("DISCORD_CONTACT_WEBHOOK_URL", "")

@@ -9,7 +9,12 @@ import "./Admin.css";
 // -- Composants utilitaires ---------------------------------------------------
 
 function Notification({ type, texte }) {
-  return <div className={`admin-notif admin-notif--${type}`}>{texte}</div>;
+  return (
+    <div className={`admin-toast admin-toast--${type}`} role="status">
+      <i className={`bi ${type === "ok" ? "bi-check-circle-fill" : "bi-exclamation-triangle-fill"}`}></i>
+      <span>{texte}</span>
+    </div>
+  );
 }
 
 function Spinner() {
@@ -103,14 +108,17 @@ export default function Admin() {
 
       {/* Barre du haut */}
       <header className="admin-topbar">
-        <span className="admin-topbar-title">Administration - Zzaelde</span>
+        <div className="admin-topbar-brand">
+          <span className="admin-topbar-title">Administration</span>
+          <span className="admin-topbar-subtitle">Zzaelde</span>
+        </div>
         <div className="admin-topbar-actions">
-          <span className="admin-topbar-user">{user?.username}</span>
-          <button className="admin-btn admin-btn--ghost" onClick={logout}>
-            Déconnexion
+          <span className="admin-topbar-user"><i className="bi bi-person-circle"></i> {user?.username}</span>
+          <button className="admin-btn admin-btn--ghost admin-btn--sm" onClick={() => navigate("/")}>
+            <i className="bi bi-box-arrow-up-right"></i> Voir le site
           </button>
-          <button className="admin-btn admin-btn--ghost" onClick={() => navigate("/")}>
-            ← Voir le site
+          <button className="admin-btn admin-btn--danger-ghost admin-btn--sm" onClick={logout}>
+            <i className="bi bi-box-arrow-right"></i> Déconnexion
           </button>
         </div>
       </header>
@@ -118,85 +126,96 @@ export default function Admin() {
       {/* Message de confirmation ou d'erreur */}
       {notification && <Notification type={notification.type} texte={notification.texte} />}
 
-      <main className="admin-main">
+      <div className="admin-body">
 
-        {/* Section : changer le mot de passe */}
-        <section className="admin-section">
-          <h2 className="admin-section-title">Mot de passe</h2>
-          <FormMotDePasse notifier={afficherNotification} />
-        </section>
+        {/* Navigation entre sections */}
+        <nav className="admin-nav">
+          <a className="admin-nav-link" href="#section-mot-de-passe"><i className="bi bi-key-fill"></i> Mot de passe</a>
+          <a className="admin-nav-link" href="#section-youtube"><i className="bi bi-youtube"></i> YouTube</a>
+          <a className="admin-nav-link" href="#section-playlists"><i className="bi bi-collection-play-fill"></i> Playlists & vidéos</a>
+          <a className="admin-nav-link" href="#section-avis"><i className="bi bi-chat-quote-fill"></i> Avis clients</a>
+        </nav>
 
-        {/* Section : synchronisation YouTube */}
-        <section className="admin-section">
-          <h2 className="admin-section-title">youtube</h2>
-          <div className="admin-youtube-bar">
-            <p className="admin-youtube-info">
-              Clique pour synchroniser playlist et video
-            </p>
-            <div style={{ display: "flex", gap: "10px" }}>
-              <button
-                className="admin-btn admin-btn--ghost"
-                onClick={connecterCompteYoutube}
-              >
-                Associer mon compte YouTube
-              </button>
-              <button
-                className="admin-btn admin-btn--primary"
-                onClick={synchroniserYoutube}
-                disabled={synchronisation}
-              >
-                {synchronisation ? <><Spinner /> synchro...</> : "synchroniser depuis ytb"}
-              </button>
+        <main className="admin-main">
+
+          {/* Section : changer le mot de passe */}
+          <section className="admin-section" id="section-mot-de-passe">
+            <h2 className="admin-section-title"><i className="bi bi-key-fill"></i> Mot de passe</h2>
+            <FormMotDePasse notifier={afficherNotification} />
+          </section>
+
+          {/* Section : synchronisation YouTube */}
+          <section className="admin-section" id="section-youtube">
+            <h2 className="admin-section-title"><i className="bi bi-youtube"></i> YouTube</h2>
+            <div className="admin-youtube-bar">
+              <p className="admin-youtube-info">
+                <i className="bi bi-info-circle"></i> Clique pour synchroniser playlist et video
+              </p>
+              <div className="admin-youtube-actions">
+                <button
+                  className="admin-btn admin-btn--ghost"
+                  onClick={connecterCompteYoutube}
+                >
+                  <i className="bi bi-link-45deg"></i> Associer mon compte YouTube
+                </button>
+                <button
+                  className="admin-btn admin-btn--primary"
+                  onClick={synchroniserYoutube}
+                  disabled={synchronisation}
+                >
+                  {synchronisation ? <><Spinner /> synchro...</> : <><i className="bi bi-arrow-repeat"></i> synchroniser depuis ytb</>}
+                </button>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* Section : gestion des playlists et vidéos */}
-        <section className="admin-section">
-          <h2 className="admin-section-title">playlist & videos</h2>
-          {chargement ? (
-            <div className="admin-loading"><Spinner /> chargement...</div>
-          ) : playlists.length === 0 ? (
-            <p className="admin-empty">
-              aucune playlist.
-            </p>
-          ) : (
-            <div className="admin-playlists">
-              {playlists.map((playlist) => (
-                <CartePlaylist
-                  key={playlist.id}
-                  playlist={playlist}
-                  onMiseAJour={chargerPlaylists}
-                  notifier={afficherNotification}
-                />
-              ))}
-            </div>
-          )}
-        </section>
+          {/* Section : gestion des playlists et vidéos */}
+          <section className="admin-section" id="section-playlists">
+            <h2 className="admin-section-title"><i className="bi bi-collection-play-fill"></i> Playlists & vidéos</h2>
+            {chargement ? (
+              <div className="admin-loading"><Spinner /> chargement...</div>
+            ) : playlists.length === 0 ? (
+              <p className="admin-empty">
+                aucune playlist.
+              </p>
+            ) : (
+              <div className="admin-playlists">
+                {playlists.map((playlist) => (
+                  <CartePlaylist
+                    key={playlist.id}
+                    playlist={playlist}
+                    onMiseAJour={chargerPlaylists}
+                    notifier={afficherNotification}
+                  />
+                ))}
+              </div>
+            )}
+          </section>
 
-        {/* Section : gestion des testimonials/avis */}
-        <section className="admin-section">
-          <h2 className="admin-section-title">avis clients</h2>
-          <FormNouveauTestimonial notifier={afficherNotification} onCree={chargerTestimonials} />
-          {chargementTestimonials ? (
-            <div className="admin-loading"><Spinner /> chargement...</div>
-          ) : testimonials.length === 0 ? (
-            <p className="admin-empty">aucun avis pour le moment.</p>
-          ) : (
-            <div className="admin-playlists">
-              {testimonials.map((avis) => (
-                <CarteTestimonial
-                  key={avis.id}
-                  avis={avis}
-                  onMiseAJour={chargerTestimonials}
-                  notifier={afficherNotification}
-                />
-              ))}
-            </div>
-          )}
-        </section>
+          {/* Section : gestion des testimonials/avis */}
+          <section className="admin-section" id="section-avis">
+            <h2 className="admin-section-title"><i className="bi bi-chat-quote-fill"></i> Avis clients</h2>
+            <FormNouveauTestimonial notifier={afficherNotification} onCree={chargerTestimonials} />
+            {chargementTestimonials ? (
+              <div className="admin-loading"><Spinner /> chargement...</div>
+            ) : testimonials.length === 0 ? (
+              <p className="admin-empty">aucun avis pour le moment.</p>
+            ) : (
+              <div className="admin-playlists">
+                {testimonials.map((avis) => (
+                  <CarteTestimonial
+                    key={avis.id}
+                    avis={avis}
+                    onMiseAJour={chargerTestimonials}
+                    notifier={afficherNotification}
+                  />
+                ))}
+              </div>
+            )}
+          </section>
 
-      </main>
+        </main>
+      </div>
     </div>
   );
 }
@@ -243,7 +262,7 @@ function FormMotDePasse({ notifier }) {
         required
       />
       <button className="admin-btn admin-btn--primary" type="submit" disabled={envoi}>
-        {envoi ? "mise a jour..." : "Changer le mot de passe"}
+        {envoi ? "mise a jour..." : <><i className="bi bi-key-fill"></i> Changer le mot de passe</>}
       </button>
     </form>
   );
@@ -340,7 +359,7 @@ function CartePlaylist({ playlist, onMiseAJour, notifier }) {
                   onClick={sauvegarderPlaylist}
                   disabled={sauvegarde}
                 >
-                  {sauvegarde ? "Enregistrement..." : "Enregistrer"}
+                  {sauvegarde ? "Enregistrement..." : <><i className="bi bi-check-lg"></i> Enregistrer</>}
                 </button>
                 <button
                   className="admin-btn admin-btn--ghost admin-btn--sm"
@@ -350,7 +369,7 @@ function CartePlaylist({ playlist, onMiseAJour, notifier }) {
                     setEnEdition(false);
                   }}
                 >
-                  annuler
+                  <i className="bi bi-x-lg"></i> annuler
                 </button>
               </div>
             </>
@@ -371,7 +390,7 @@ function CartePlaylist({ playlist, onMiseAJour, notifier }) {
               className="admin-btn admin-btn--ghost admin-btn--sm"
               onClick={() => setEnEdition(true)}
             >
-              modifier
+              <i className="bi bi-pencil-square"></i> modifier
             </button>
           )}
           <input
@@ -385,12 +404,13 @@ function CartePlaylist({ playlist, onMiseAJour, notifier }) {
             className="admin-btn admin-btn--ghost admin-btn--sm"
             onClick={() => champFichier.current?.click()}
           >
-            changer l'image
+            <i className="bi bi-image"></i> changer l'image
           </button>
           <button
             className="admin-btn admin-btn--ghost admin-btn--sm"
             onClick={afficherOuMasquerVideos}
           >
+            <i className={`bi ${videosAffichees ? "bi-chevron-up" : "bi-chevron-down"}`}></i>{" "}
             {videosAffichees
               ? "Masquer les vidéos"
               : `Vidéos (${playlist.videos?.length ?? "?"})`}
@@ -485,13 +505,13 @@ function LigneVideo({ video, onMiseAJour, onSuppression, notifier }) {
               onClick={sauvegarderVideo}
               disabled={sauvegarde}
             >
-              {sauvegarde ? "..." : "ok"}
+              {sauvegarde ? "..." : <i className="bi bi-check-lg"></i>}
             </button>
             <button
               className="admin-btn admin-btn--ghost admin-btn--sm"
               onClick={() => { setTitre(video.title); setEnEdition(false); }}
             >
-              annuler
+              <i className="bi bi-x-lg"></i>
             </button>
           </>
         ) : (
@@ -499,14 +519,14 @@ function LigneVideo({ video, onMiseAJour, onSuppression, notifier }) {
             className="admin-btn admin-btn--ghost admin-btn--sm"
             onClick={() => setEnEdition(true)}
           >
-            renommer
+            <i className="bi bi-pencil"></i> renommer
           </button>
         )}
         <button
           className={`admin-btn admin-btn--sm ${video.masquee ? "admin-btn--primary" : "admin-btn--danger-ghost"}`}
           onClick={basculerVisibilite}
         >
-          {video.masquee ? "rendre visible" : "masquer"}
+          <i className={`bi ${video.masquee ? "bi-eye" : "bi-eye-slash"}`}></i> {video.masquee ? "rendre visible" : "masquer"}
         </button>
       </div>
     </div>
@@ -553,7 +573,7 @@ function FormNouveauTestimonial({ notifier, onCree }) {
       />
       <textarea
         className="admin-textarea"
-        placeholder="commentaire du client"
+        placeholder="commentaire/métier"
         value={texte}
         onChange={(e) => setTexte(e.target.value)}
         maxLength={256}
@@ -579,7 +599,7 @@ function FormNouveauTestimonial({ notifier, onCree }) {
         ))}
       </select>
       <button className="admin-btn admin-btn--primary admin-btn--sm" type="submit" disabled={envoi}>
-        {envoi ? "creation..." : "ajouter un avis"}
+        {envoi ? "creation..." : <><i className="bi bi-plus-lg"></i> ajouter un avis</>}
       </button>
     </form>
   );
@@ -681,7 +701,7 @@ function CarteTestimonial({ avis, onMiseAJour, notifier }) {
                   onClick={sauvegarderTestimonial}
                   disabled={sauvegarde}
                 >
-                  {sauvegarde ? "enregistrement..." : "enregistrer"}
+                  {sauvegarde ? "enregistrement..." : <><i className="bi bi-check-lg"></i> enregistrer</>}
                 </button>
                 <button
                   className="admin-btn admin-btn--ghost admin-btn--sm"
@@ -693,7 +713,7 @@ function CarteTestimonial({ avis, onMiseAJour, notifier }) {
                     setEnEdition(false);
                   }}
                 >
-                  annuler
+                  <i className="bi bi-x-lg"></i> annuler
                 </button>
               </div>
             </>
@@ -712,7 +732,7 @@ function CarteTestimonial({ avis, onMiseAJour, notifier }) {
               className="admin-btn admin-btn--ghost admin-btn--sm"
               onClick={() => setEnEdition(true)}
             >
-              modifier
+              <i className="bi bi-pencil-square"></i> modifier
             </button>
           )}
           <input
@@ -726,13 +746,13 @@ function CarteTestimonial({ avis, onMiseAJour, notifier }) {
             className="admin-btn admin-btn--ghost admin-btn--sm"
             onClick={() => champFichier.current?.click()}
           >
-            changer l'image
+            <i className="bi bi-image"></i> changer l'image
           </button>
           <button
             className="admin-btn admin-btn--danger-ghost admin-btn--sm"
             onClick={supprimer}
           >
-            supprimer
+            <i className="bi bi-trash"></i> supprimer
           </button>
         </div>
       </div>

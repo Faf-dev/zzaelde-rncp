@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./ContactForm.css";
 import GlassSubmit from "../GlassButton/GlassSubmit";
+import { publicApi } from "../../api/client";
 
 export default function ContactForm() {
   // État pour gérer les valeurs du formulaire
@@ -91,49 +92,10 @@ export default function ContactForm() {
     }
 
     setIsSubmitting(true);
-    
+
     try {
-      // Toujours essayer d'envoyer via l'API
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-      });
+      await publicApi.envoyerContact(formData);
 
-      // Si l'API n'existe pas (404), on est en mode npm start
-      if (response.status === 404) {
-        console.log("📧 Mode développement (npm start) - Données du formulaire:", formData);
-        console.log("⚠️ Pour tester l'envoi réel en local, utilisez 'npm run dev:vercel'");
-        
-        // Simuler un envoi réussi
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        setIsSubmitted(true);
-        setFormData({
-          nom: "",
-          email: "",
-          sujet: "",
-          message: ""
-        });
-        return;
-      }
-
-      // Parser la réponse JSON
-      const contentType = response.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        throw new Error("Réponse invalide du serveur");
-      }
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Erreur lors de l\'envoi');
-      }
-
-      // Succès de l'envoi réel
-      console.log("✅ Email envoyé avec succès !");
       setIsSubmitted(true);
       setFormData({
         nom: "",
@@ -141,27 +103,11 @@ export default function ContactForm() {
         sujet: "",
         message: ""
       });
-      
     } catch (error) {
       console.error("Erreur lors de l'envoi:", error);
-      
-      // Si c'est une erreur réseau ou de parsing, on est probablement en npm start
-      if (error instanceof TypeError || error.message.includes("JSON")) {
-        console.log("📧 Mode développement (npm start) - Données du formulaire:", formData);
-        console.log("⚠️ Pour tester l'envoi réel en local, utilisez 'npm run dev:vercel'");
-        
-        setIsSubmitted(true);
-        setFormData({
-          nom: "",
-          email: "",
-          sujet: "",
-          message: ""
-        });
-      } else {
-        setErrors({ 
-          submit: error.message || "Une erreur s'est produite lors de l'envoi. Veuillez réessayer." 
-        });
-      }
+      setErrors({
+        submit: error.message || "Une erreur s'est produite lors de l'envoi. Veuillez réessayer."
+      });
     } finally {
       setIsSubmitting(false);
     }

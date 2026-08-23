@@ -1,11 +1,11 @@
 .review-page {
-    overflow: hidden;
+    overflow-x: hidden;
     background: linear-gradient(to top, #eee6d2 0%, #e6dbbf 100%);
     box-shadow: inset 0 -0.75rem 1.5rem rgba(0, 10, 19, 0.08);
 }
 
 .review-page .review-marquee {
-    overflow: hidden;
+    overflow-x: hidden;
     width: 100%;
     padding: 4rem 0;
     -webkit-mask-image: linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%);
@@ -46,45 +46,70 @@
     position: relative;
     height: 7rem;
     width: 7.5rem;
+    perspective: 60rem;
 }
 
-.review-page .review-track .review-photo img {
+.review-page .review-track .review-photo-flip {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s ease;
+    transform-style: preserve-3d;
+}
+
+.review-page .review-track .review-container:hover .review-photo-flip {
+    transform: rotateY(180deg);
+}
+
+.review-page .review-track .review-photo-face {
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid black;
-    transition: transform 0.35s ease;
+    backface-visibility: hidden;
 }
 
-.review-page .review-track .review-container:hover .review-photo img {
-    transform: translateY(-0.1rem);
+.review-page .review-track .review-photo-front img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid black;
+}
+
+.review-page .review-track .review-photo-back {
+    transform: rotateY(180deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #eee6d2;
+    border: 1px solid black;
+    padding: 0.4rem;
+    overflow: hidden;
 }
 
 .review-page .review-track .review-info {
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
     text-align: center;
-    transition: max-height 0.35s ease, opacity 0.3s ease;
-}
-
-.review-page .review-track .review-container:hover .review-info {
-    max-height: 6rem;
-    opacity: 1;
 }
 
 .review-page .review-track .review-info h3 {
-    font-size: 0.95rem;
+    font-size: 1rem;
     margin: 0;
     color: #2a2a2a;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .review-page .review-track .review-info p {
-    font-size: 0.8rem;
+    font-size: 0.65rem;
     margin: 0.15rem 0 0;
     color: #555555;
     font-style: italic;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .review-page .review-track .review-link {
@@ -105,57 +130,73 @@
 }
 
 /* Responsive */
-@media (max-width: 768px) {
-    .review-page .review-marquee {
-        padding: 3rem 0;
-    }
+@media (min-width: 2300px) {
 
     .review-page .review-track {
         gap: 2rem;
-        animation-duration: 18s;
     }
 
     .review-page .review-track .review-container {
-        width: 7rem;
+        margin-top: 1rem !important;
+        margin-bottom: -1rem !important;
     }
 
-    .review-page .review-track .review-photo {
-        height: 5rem;
-        width: 5rem;
-    }
+      .a-propos-section {
+    min-height: calc(100vh - 6rem);
+    justify-content: space-between;
+  }
 
-    .review-page .review-track .review-container:hover .review-photo img {
-        transform: translateY(-1.1rem);
-    }
+  /* Le "main" garanti par Apropos.css force min-height:100vh + centrage vertical :
+     on l'annule ici pour que le titre ne soit plus coupé. */
+  .a-propos-section .a-propos {
+    min-height: 0;
+    flex: 1 1 auto;
+  }
 
-    .review-page .review-track .review-info h3 {
-        font-size: 0.8rem;
-    }
+  .a-propos-section .a-propos main {
+    min-height: 0;
+    justify-content: flex-start;
+    padding-top: 2rem;
+  }
 
-    .review-page .review-track .review-info p {
-        font-size: 0.7rem;
-    }
+  .a-propos-section .content h1 {
+    font-size: 2.7rem;
+    margin: 0;
+  }
 
-    .review-page .review-track .review-link {
-        font-size: 0.85rem;
-        padding: 0.35rem 1rem;
-    }
+  .a-propos-section .about-row {
+    gap: 1.5rem;
+  }
+
+  .a-propos-section .about-row .description {
+    font-size: 1.1rem;
+    margin: 0rem 0;
+  }
+
+  .a-propos-section .about-placeholder {
+    min-height: 8rem;
+  }
+
+  .a-propos-section #temoignages {
+    flex: 0 0 auto;
+  }
+
+  .a-propos-section #temoignages .review-page h1 {
+    padding: 1rem;
+  }
+
+  .a-propos-section #temoignages .review-marquee {
+    padding: 2rem 0;
+  }
+
+  .a-propos-section #temoignages .review-container {
+    width: 10rem;
+    margin-top: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  .a-propos-section #temoignages .review-main {
+    height: 10rem;
+    padding: 1rem;
+  }
 }
-
-
-/* .tag-box {
-    position: relative;
-    width: 18rem;
-    height: 2.5rem;
-    border-radius: 50px;
-    background: linear-gradient(to right, #656565, #7f42a7, #6600c5, #5300a0, #757575, #656565);
-    background-size: 200%;
-    animation: animationGradient 2.5s linear infinite;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-}
-
-@keyframes animationGradient {
-    to {
-        background-position: 200%;
-    }
-}*/

@@ -53,11 +53,11 @@
 }
 
 #a-propos {
-  scroll-margin-top: 4rem;
+  scroll-margin-top: 5rem;
 }
 
 #contact {
-  scroll-margin-top: 6rem;
+  scroll-margin-top: 3rem;
 }
 /* Ecran 1080 */
 @media (max-width: 1920px) and (max-height: 1080px) {
@@ -73,8 +73,19 @@
     scroll-margin-top: -1rem;
   }
 
+  .a-propos-section .a-propos main {
+    min-height: 0;
+    justify-content: flex-start;
+    padding-top: 0rem !important;
+    margin-bottom: 2.5rem;
+  }  
+
   #contact {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: -6rem;
+  }
+
+  .review-page .review-track  {
+    height: 9rem;
   }
 }
 
@@ -171,8 +182,90 @@
   background-color: lightgray;
 }
 
+/* Responsive pour écran 2K (2560px) et plus */
+@media (min-width: 1400px) {
+    .a-propos-section {
+    min-height: calc(100vh - 6rem);
+    justify-content: space-between;
+  }
+
+  #contact {
+    padding-top: 5rem;
+  }
+
+  /* Le "main" garanti par Apropos.css force min-height:100vh + centrage vertical :
+     on l'annule ici pour que le titre ne soit plus coupé. */
+  .a-propos-section .a-propos {
+    min-height: 0;
+    flex: 1 1 auto;
+  }
+
+  .a-propos-section .a-propos main {
+    min-height: 0;
+    justify-content: flex-start;
+    padding-top: 3rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .a-propos-section .content h1 {
+    font-size: 2.7rem;
+    margin: 0;
+    margin-bottom: 4rem;
+  }
+
+  .a-propos-section .about-row {
+    gap: 1.5rem;
+  }
+
+  .a-propos-section .about-row .description {
+    font-size: 1.1rem;
+    margin: 0rem 0;
+  }
+
+  .a-propos-section .about-placeholder {
+    min-height: 8rem;
+  }
+
+  .a-propos-section #temoignages {
+    flex: 0 0 auto;
+  }
+
+  .a-propos-section #temoignages .review-page h1 {
+    padding: 1rem;
+  }
+
+  .a-propos-section #temoignages .review-marquee {
+    padding: 2rem 0;
+  }
+
+  .a-propos-section #temoignages .review-container {
+    width: 10rem;
+    margin-top: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  .a-propos-section #temoignages .review-main {
+    height: 10rem;
+    padding: 1rem;
+  }
+
+  .a-propos-section #temoignages .review-container img {
+    height: 8rem;
+    width: 8rem;
+    margin-top: -2rem;
+    margin-left: -2px;
+  }
+
+  .a-propos-section #temoignages .review-container .review-photo .review-photo-back {
+    margin-top: -2rem;
+    margin-left: -4px;
+    height: 8rem;
+    width: 8rem;
+  }
+}
+
 /* Desktop 1080p et + : la description et les témoignages tiennent sur un seul écran */
-@media (min-width: 1024px) {
+@media (min-width: 1024px) and (max-height: 1080px) {
   .a-propos-section {
     min-height: calc(100vh - 6rem);
     justify-content: space-between;
@@ -192,7 +285,7 @@
   }
 
   .a-propos-section .content h1 {
-    font-size: 2.6rem;
+    font-size: 2.7rem;
     margin: 0;
   }
 
@@ -218,11 +311,7 @@
   }
 
   .a-propos-section #temoignages .review-marquee {
-    padding: 0rem 0;
-  }
-
-  .a-propos-section #temoignages .review-track {
-    height: 16rem;
+    padding: 2rem 0;
   }
 
   .a-propos-section #temoignages .review-container {
@@ -240,6 +329,22 @@
     height: 8rem;
     width: 8rem;
     margin-top: -2rem;
+  }
+
+  .a-propos-section #temoignages .review-container .review-photo .review-photo-back {
+    margin-top: -2rem;
+    height: 8rem;
+    width: 8rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .a-propos-section #temoignages .review-container img {
+    margin-left: 0px;
+  }
+
+  .review-page .review-track .review-link {
+    margin-top: 1rem;
   }
 }
 
