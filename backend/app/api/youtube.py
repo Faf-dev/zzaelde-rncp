@@ -231,15 +231,15 @@ class SynchroniserYoutube(Resource):
                         titre=snippet.get("title", ""),
                         miniature_url=miniature_video,
                         date_publication=date,
-                        url=f"https://youtube.com/watch?v={video_id}",
-                    )
-                    db.session.add(video)
-                else:
-                    video = Video.query.get(video_id)
-                    if video:
-                        video.titre = snippet.get("title", "")
-                        video.miniature_url = miniature_video
-                        video.date_publication = date
-
-        db.session.commit()
-        return {"message": "synchronisation terminee"}, 200
+                        url=f"https://youtube.com/watch?v={video_id}", 
+                    ) 
+                    db.session.add(video) 
+                else: 
+                    video = Video.query.get(video_id) 
+                    if video: 
+                        video.titre = snippet.get("title", "") 
+                        video.miniature_url = miniature_video 
+                        video.date_publication = date 
+ 
+        db.session.commit() 
+        return {"message": "synchronisation terminee"}, 200 
