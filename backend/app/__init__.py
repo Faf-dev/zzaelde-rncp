@@ -21,7 +21,7 @@ def create_app():
     app.config.from_object(Config)
 
     # support_credentials=True est obligatoire pour laisser passer les cookies HttpOnly 
-    CORS(app, origins=["http://localhost:3000"], supports_credentials=True)
+    CORS(app, origins=[os.environ["FRONTEND_URL"]], supports_credentials=True)
 
     db.init_app(app)
     jwt.init_app(app)
