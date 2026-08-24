@@ -21,8 +21,10 @@ class Config:
     
     # On passe en HttpOnly Cookies
     JWT_TOKEN_LOCATION = ["cookies"]
-    JWT_COOKIE_SECURE = False  # False car localhost, passer a True en prod 
+    JWT_COOKIE_SECURE = True  # False car localhost, passer a True en prod 
     JWT_COOKIE_CSRF_PROTECT = False # Simplifie l'implementation pour l'instant
+
+    FRONTEND_URL = os.environ["FRONTEND_URL"]
     
     YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY", "")
     YOUTUBE_CHANNEL_ID = os.environ.get("YOUTUBE_CHANNEL_ID", "")

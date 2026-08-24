@@ -1,3 +1,4 @@
+import os
 import json
 import urllib.request
 import urllib.parse
@@ -15,6 +16,7 @@ from app.models.user import User
 youtube_ns = Namespace("youtube", path="/api/youtube", description="Synchronisation YouTube")
 
 YOUTUBE_API = "https://www.googleapis.com/youtube/v3"
+FRONTEND_URL = os.environ["FRONTEND_URL"]
 
 
 @youtube_ns.route("/auth")
@@ -55,7 +57,7 @@ class CallbackYoutube(Resource):
         
         if erreur or not code:
             # L'utilisateur a surement cliqué sur "Annuler"
-            return redirect("http://localhost:3000/admin?youtube_error=refuse")
+            return redirect(f"{FRONTEND_URL}/admin?youtube_error=refuse")
             
         # On a le 'code', on va le donner a Google pour recuperer le 'refresh_token'
         donnees = urllib.parse.urlencode({
@@ -79,17 +81,17 @@ class CallbackYoutube(Resource):
                 if user:
                     user.youtube_refresh_token = refresh_token
                     db.session.commit()
-                    return redirect("http://localhost:3000/admin?youtube_success=1")
+                    return redirect(f"{FRONTEND_URL}/admin?youtube_success=1")
                 else:
-                    return redirect("http://localhost:3000/admin?youtube_error=user_not_found")
+                    return redirect(f"{FRONTEND_URL}/admin?youtube_error=user_not_found")
             else:
                 # Si google ne renvoi pas de refresh_token, c'est qu'il a deja été accordé avant. 
                 # (le 'prompt=consent' devrait empecher ca, mais c'est une securité)
-                return redirect("http://localhost:3000/admin?youtube_error=no_refresh_token")
+                return redirect(f"{FRONTEND_URL}/admin?youtube_error=no_refresh_token")
                 
         except urllib.error.HTTPError as e:
             print(f"Erreur oauth Google: {e.read().decode()}")
-            return redirect("http://localhost:3000/admin?youtube_error=http_error")
+            return redirect(f"{FRONTEND_URL}/admin?youtube_error=http_error")
 
 
 def get_access_token_from_refresh(refresh_token):
