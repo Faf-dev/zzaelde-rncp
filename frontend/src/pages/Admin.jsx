@@ -308,6 +308,17 @@ function CartePlaylist({ playlist, onMiseAJour, notifier }) {
     e.target.value = "";
   }
 
+  async function supprimerPlaylist() {
+  if (!window.confirm(`Supprimer définitivement la playlist "${playlist.title}" et toutes ses vidéos ?`)) return;
+  try {
+    await adminPlaylistsApi.supprimer(playlist.id);
+    notifier("ok", "playlist supprimée");
+    onMiseAJour();
+  } catch (err) {
+    notifier("err", err.message);
+  }
+}
+
   async function afficherOuMasquerVideos() {
     if (videosAffichees) {
       setVideosAffichees(false);
@@ -405,6 +416,12 @@ function CartePlaylist({ playlist, onMiseAJour, notifier }) {
             onClick={() => champFichier.current?.click()}
           >
             <i className="bi bi-image"></i> changer l'image
+          </button>
+          <button
+            className="admin-btn admin-btn--danger admin-btn--sm"
+            onClick={supprimerPlaylist}
+          >
+            <i className="bi bi-trash"></i> supprimer la playlist
           </button>
           <button
             className="admin-btn admin-btn--ghost admin-btn--sm"

@@ -78,6 +78,8 @@ export const adminPlaylistsApi = {
       body: JSON.stringify(donnees),
     }),
 
+  supprimer: (id) => request(`/api/admin/playlists/${id}`, { method: "DELETE" }),
+
   changerImage: (id, fichier) => {
     const formulaire = new FormData();
     formulaire.append("image", fichier);

@@ -243,6 +243,27 @@
   color: #000;
 }
 
+.admin-btn--danger {
+  background-color: #dc3545;
+  border: 1px solid #dc3545;
+  color: #fff;
+}
+
+.admin-btn--danger:hover:not(:disabled) {
+  background-color: #bb2d3b;
+  border-color: #b02a37;
+}
+
+.admin-btn--danger:active:not(:disabled) {
+  background-color: #a52834;
+  border-color: #9c2631;
+}
+
+.admin-btn--danger:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .admin-btn:hover:not(:disabled) { opacity: 0.85; }
 .admin-btn:active:not(:disabled) { transform: scale(0.97); }
 .admin-btn:disabled { opacity: 0.4; cursor: not-allowed; }

@@ -57,7 +57,7 @@ export default function Footer() {
                 <div className="col-1-2">
                     <ul className="footer-nav nav">
                         <li className="footer-nav-item nav-item">
-                            <Link to="/mention-legales" className="footer-nav-link">Mentions légales</Link>
+                            <Link to="/mentions-legales" className="footer-nav-link">Mentions légales</Link>
                         </li>
                         <li className="footer-nav-item nav-item">
                             <Link to="/privacy-policy" className="footer-nav-link">Politique de confidentialité</Link>

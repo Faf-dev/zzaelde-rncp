@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Header from './composants/Header/Header';
 import Home from './pages/Accueil';
 import DetailPlaylist from './pages/DetailPlaylist';
+import PolitiqueConfidentialite from './pages/PolitiqueConfidentialite';
+import MentionsLegales from './pages/MentionsLegales';
 import Login from './pages/Login';
 import Admin from './pages/Admin';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
@@ -24,6 +26,8 @@ function PublicLayout() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/detail/:playlistId" element={<DetailPlaylist />} />
+        <Route path="/privacy-policy" element={<PolitiqueConfidentialite />} />
+        <Route path="/mentions-legales" element={<MentionsLegales />} />
       </Routes>
     </>
   );
