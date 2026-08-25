@@ -313,6 +313,9 @@ main {
         margin-bottom: 0rem;
         margin-top: 0 !important;
         overflow: hidden;
+        min-width: 55vh;
+        position: relative;
+        right: 3%;
     }
 
     .tag-box {
@@ -321,13 +324,15 @@ main {
     }
 
     .content h1 {
-        font-size: 2rem;
+        font-size: 1.7rem;
         padding: 0rem;
         margin-top: 0rem;
+        font-weight: 800;
+        margin-bottom: 0;
     }
 
     .description {
-        font-size: 1rem;
+        font-size: 1.1rem !important;
         padding: 0 1.5rem;
     }
 
@@ -343,9 +348,9 @@ main {
 
     .btn-contact-main {
         font-size: 0.8rem;
-        padding: 0.7rem 1.5rem;
+        padding: 0.7rem 1.4rem;
         margin-top: 1rem;
-        margin-left: 10.5rem;
+        margin-left: 10rem;
         align-items: center;
     }
 }

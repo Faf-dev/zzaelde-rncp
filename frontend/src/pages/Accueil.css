@@ -123,7 +123,7 @@
   }
 
   #contact {
-    scroll-margin-top: 6rem;
+    scroll-margin-top: 3rem;
   }
 }
 
@@ -354,6 +354,24 @@
     font-size: 2rem;
   }
   
+  .contact-form-container {
+   margin-top: -12rem;
+
+   padding-top: 0;
+  }
+
+  .contact-form {
+    transform: scale(0.9);
+  }
+
+  .contact-form h2 {
+    font-size: 1.5rem;
+  }
+
+  .contact-form-container .contact-form {
+    max-height: 100vh;
+  }
+
   .content p {
     font-size: 1rem;
   }
@@ -363,6 +381,8 @@
   }
 
   .a-propos-section .a-propos main {
-    min-height: auto;
+    min-height: 250vh;
+    padding-bottom: 0;
+    margin-bottom: -6rem;
   }
 }
