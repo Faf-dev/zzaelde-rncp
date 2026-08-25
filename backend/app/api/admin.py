@@ -33,6 +33,26 @@ class GetPlaylists(Resource):
         return [playlist.to_dict() for playlist in playlists], 200
 
 
+@admin_ns.route("/playlists/<string:playlist_id>", methods=["DELETE"])
+class DeletePlaylist(Resource):
+    @jwt_required()
+    def delete(self, playlist_id):
+        """supprime une playlist et ses vidéos"""
+
+        if check_role([Role.ADMIN, Role.ZZAELDE]) is None:
+            return {"erreur": "acces refuse"}, 403
+
+        playlist = Playlist.query.get_or_404(playlist_id)
+
+        # supprime la playlist et ses vidéos
+        for video in playlist.videos:
+            db.session.delete(video)
+        db.session.delete(playlist)
+
+        db.session.commit()
+        return playlist.to_dict(), 200
+
+
 @admin_ns.route("/playlists/<string:playlist_id>", methods=["PATCH"])
 class UpdatePlaylist(Resource):
     @jwt_required()
